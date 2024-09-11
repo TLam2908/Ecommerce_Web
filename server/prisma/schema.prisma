@@ -1,0 +1,99 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Manufacturer {
+  id Int @id @default(autoincrement())
+  name String
+  country String
+  type_of_product String
+  abbreviation String?
+
+  Autopart Autopart[]
+}
+
+model Category {
+  id Int @id @default(autoincrement())
+  name String
+  description String?
+  code String
+
+  Autopart Autopart[]
+}
+
+model Autopart {
+  id Int @id @default(autoincrement())
+  name String
+  description String?
+  price Int
+  manufacturer_id Int
+  category_id Int
+  image_src String
+  image_id String
+  model_compatiple String
+  year_compatible String
+  
+  manufacturer Manufacturer @relation(fields: [manufacturer_id], references: [id])
+  category Category @relation(fields: [category_id], references: [id])
+
+
+  CartItem CartItem[]
+}
+
+model User {
+  id Int @id @default(autoincrement())
+  email String @unique
+  password String
+  name String
+  phone_number String
+  address String
+  role String
+  image String?
+
+  Cart Cart[]
+  Payment Payment[]
+}
+
+model Cart {
+  id Int @id @default(autoincrement())
+  user_id Int
+  total Int
+
+  User User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  CartItem CartItem[]
+  Payment Payment[]
+}
+
+model CartItem {
+  id Int @id @default(autoincrement())
+  cart_id Int
+  autopart_id Int
+  quantity Int
+
+  Cart Cart @relation(fields: [cart_id], references: [id], onDelete: Cascade)
+  Autopart Autopart @relation(fields: [autopart_id], references: [id])
+}
+
+model Payment {
+  id Int @id @default(autoincrement())
+  user_id Int
+  cart_id Int
+  amount Int
+  payment_status String
+  payment_date DateTime
+
+  User User @relation(fields: [user_id], references: [id])
+  Cart Cart @relation(fields: [cart_id], references: [id])
+}
