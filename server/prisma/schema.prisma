@@ -56,10 +56,13 @@ model User {
   email String @unique
   password String
   name String
-  phone_number String
-  address String
+  phone_number String?
+  address String?
   role String
   image String?
+
+  verified Boolean @default(false)
+
 
   Cart Cart[]
   Payment Payment[]
