@@ -66,6 +66,28 @@ model User {
 
   Cart Cart[]
   Payment Payment[]
+  VerificationCode VerificationCode[]
+  Session Session[]
+}
+
+model VerificationCode {
+  id Int @id @default(autoincrement())
+  type String
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+  user_id Int
+
+  User User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+}
+
+model Session {
+  id Int @id @default(autoincrement())
+  user_id Int
+  createdAt DateTime @default(now())
+  expiresAt DateTime 
+  userAgent String?
+
+  User User @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
 
 model Cart {
