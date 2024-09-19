@@ -61,6 +61,7 @@ model User {
   role String
   image String?
 
+  createAt DateTime
   verified Boolean @default(false)
 
 

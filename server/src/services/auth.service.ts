@@ -1,7 +1,10 @@
 import { PrismaClient } from "@prisma/client";
-import jwt from "jsonwebtoken";
+import jwt from "jsonwebtoken"
+const moment = require('moment-timezone');
 import { hashValue, compareValue } from "../utils/bcrypt";
 import { JWT_REFRESH_SECRET, JWT_SECRET } from "../constants/env";
+import appAssert from "../utils/appAssert";
+import { CONFLICT, UNAUTHORIZED } from "../constants/http";
 
 const prisma = new PrismaClient();
 
@@ -20,9 +23,12 @@ export const createAccount = async (data: CreateAcountParams) => {
     },
   });
 
-  if (existingUser) {
-    throw new Error("User already exists");
-  }
+  // if !existingUser false, throw error
+  appAssert(!existingUser, CONFLICT, "Email already exists");
+
+  // if (existingUser) {
+  //   throw new Error("User already exists");
+  // }
 
   // create user
   const hashedPassword = await hashValue(data.password);
@@ -32,16 +38,25 @@ export const createAccount = async (data: CreateAcountParams) => {
       password: hashedPassword,
       name: data.name,
       role: "user",
+      verified: false,
+      createAt: moment().tz('Asia/Ho_Chi_Minh').toISOString()
     },
   });
-  console.log(user)
+
+  const safeUser = {
+    id: user.id,
+    email: user.email,
+    name: user.name,
+    verified: user.verified,
+    createAt: user.createAt
+  }
 
   // create verification code
   const verificationCode = await prisma.verificationCode.create({
     data: {
       user_id: user.id,
       type: "verify_email",
-      expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24), // 24 hours
+      expiresAt: moment().tz('Asia/Ho_Chi_Minh').add(24, 'hours').toISOString(), // 24 hours
     },
   });
 
@@ -51,7 +66,7 @@ export const createAccount = async (data: CreateAcountParams) => {
     data: {
       user_id: user.id,
       userAgent: data.userAgent,
-      expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30), // 30 days
+      expiresAt: moment().tz('Asia/Ho_Chi_Minh').add(30, 'days').toISOString(), // 30 days
     },
   });
 
@@ -75,8 +90,33 @@ export const createAccount = async (data: CreateAcountParams) => {
 
   // return user and tokens
   return {
-    user,
+    safeUser,
     accessToken,
     refreshToken,
   };
 };
+
+type LoginParams = {
+  email: string;
+  password: string;
+  userAgent?: string;
+};
+
+export const loginUser = async ({email, password, userAgent}: LoginParams) => {
+  // get user by email
+  const user = await prisma.user.findUnique({
+    where: {
+      email,
+    },
+  });
+
+  appAssert(user, UNAUTHORIZED, "Invalid email or password");
+
+  // validate password
+  const validPassword = await compareValue(password, user.password);
+  appAssert(validPassword, UNAUTHORIZED, "Invalid password");
+  
+  // create session
+  // sign access token and refresh token
+  // return user and tokens
+}

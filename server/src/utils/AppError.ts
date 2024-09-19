@@ -11,6 +11,5 @@ class AppError extends Error {
     }
 }
 
-new AppError(200, 'msg')
 
 export default AppError
