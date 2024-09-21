@@ -1,8 +1,16 @@
-import { Button } from "@/components/ui/button";
+import { Header } from "@/sections/Header";
+import { Hero } from "@/sections/Hero";
+import { LogoTicker } from "@/sections/LogoTicker"; 
+import { ProductShowcase } from "@/sections/ProductShowcase";
+import { Service } from "@/sections/Service";
 export default function Home() {
   return (
-   <div className="">
-      <Button>Click me</Button>
-   </div>
+    <>
+      <Header />
+      <Hero />
+      <LogoTicker />
+      <ProductShowcase />
+      <Service />
+    </>
   );
 }
