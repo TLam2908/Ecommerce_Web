@@ -5,6 +5,7 @@ import ignitionCoils from "@/assets/landingPage/ignition-coils.png"
 import brakeDiscs from "@/assets/landingPage/brake-discs.png"
 import cylinderHead from "@/assets/landingPage/cylinder-head.png"
 import waterPump from "@/assets/landingPage/water-pump.png"
+import massAir from "@/assets/landingPage/mass-air-flow.jpg"
 
 const featuredProducts = [
   {
@@ -32,6 +33,12 @@ const featuredProducts = [
     image: waterPump,
     description: "Engine water pump for cooling system",
   },
+  {
+    name: "Mass Air Flow Sensor",
+    image: massAir,
+    description: "Mass air flow sensor for engine",
+  },
+
 ]
 
 export const ProductShowcase = () => {
@@ -60,11 +67,11 @@ export const ProductShowcase = () => {
                 sm:grid-cols-1
                 md:grid-cols-2
                 lg:grid-cols-3
-                2xl:grid-cols-4
+                2xl:grid-cols-3
                 gap-10
                 mt-10
                 px-20
-                max-w-[1300px] mx-auto"
+                max-w-[1300px] mx-auto cursor-pointer"
         >
           {featuredProducts.map((product) => (
             <FeaturedProduct key={product.name} {...product} />

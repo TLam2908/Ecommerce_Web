@@ -1,28 +1,25 @@
 import Image, { StaticImageData } from "next/image";
 
 type FeaturedProductProps = {
-    name: string;
-    image: StaticImageData;
-    description: string;
+  name: string;
+  image: StaticImageData;
+  description: string;
 };
 
-
-export const FeaturedProduct = ({ name, image, description }: FeaturedProductProps): JSX.Element => {
-
-    return (
-        <div className="flex flex-col gap-4">
-            <div className="cursor-pointer group">
-                <div className="flex flex-col">
-                    <div className="aspect-square overflow-hidden relative rounded-xl">
-                        <Image src={image} alt="brake-disc" width={500} height={500} className="border-2 border-black w-[250px] h-[250px] transition group-hover:scale-110" />
-                    </div>
-                    <div className="">
-                        <div className="font-bold text-lg text-black">{name}</div>
-                        <div className="text-gray-500">{description}</div>
-                    </div>
-                </div>
-            </div>
+export const FeaturedProduct = ({
+  name,
+  image,
+  description,
+}: FeaturedProductProps): JSX.Element => {
+  return (
+    <div className="p-10 rounded-3xl border border-[#F1F1F1] shadow-[0_7px_14px_#EAEAEA]">
+      <div className="flex flex-col gap-4 group">
+        <Image alt="product" src={image} className="transition group-hover:scale-110 w-[250px] h-[190px]"/>
+        <div>
+            <h3 className="text-lg font-bold text-black">{name}</h3>
+            <p className="text-sm text-black">{description}</p>
         </div>
-    )
-}
-
+      </div>
+    </div>
+  );
+};
