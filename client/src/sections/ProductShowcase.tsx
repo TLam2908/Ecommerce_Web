@@ -1,20 +1,19 @@
-
-import { FeaturedProduct } from "@/components/landingPage/FeaturedProduct"
-import wheelHub from "@/assets/landingPage/wheel-hub-bearing-assembly.png"
-import ignitionCoils from "@/assets/landingPage/ignition-coils.png"
-import brakeDiscs from "@/assets/landingPage/brake-discs.png"
-import cylinderHead from "@/assets/landingPage/cylinder-head.png"
-import waterPump from "@/assets/landingPage/water-pump.png"
-import massAir from "@/assets/landingPage/mass-air-flow.jpg"
+import { FeaturedProduct } from "@/components/landingPage/FeaturedProduct";
+import wheelHub from "@/assets/landingPage/wheel-hub-bearing-assembly.png";
+import ignitionCoils from "@/assets/landingPage/ignition-coils.png";
+import brakeDiscs from "@/assets/landingPage/brake-discs.png";
+import cylinderHead from "@/assets/landingPage/cylinder-head.png";
+import waterPump from "@/assets/landingPage/water-pump.png";
+import massAir from "@/assets/landingPage/mass-air-flow.jpg";
 
 const featuredProducts = [
   {
-    name: "Wheel Hub Bearing Assembly",
+    name: "Tranmission and Chassis",
     image: wheelHub,
     description: "Rear axle hub and bearing assembly",
   },
   {
-    name: "Ignition Coil",
+    name: "Electric",
     image: ignitionCoils,
     description: "Ignition coil used to provide the spark for the engine",
   },
@@ -24,7 +23,7 @@ const featuredProducts = [
     description: "Front brake disc for braking system",
   },
   {
-    name: "Cylinder Head",
+    name: "Engine",
     image: cylinderHead,
     description: "Cylinder head assembly for engine",
   },
@@ -38,12 +37,11 @@ const featuredProducts = [
     image: massAir,
     description: "Mass air flow sensor for engine",
   },
-
-]
+];
 
 export const ProductShowcase = () => {
   return (
-    <section className="py-24 bg-white">
+    <section className="py-24 bg-white overflow-x-clip">
       <div className="">
         <div className="max-w-[600px] mx-auto">
           <div className="flex justify-center">
@@ -61,8 +59,9 @@ export const ProductShowcase = () => {
             offering you optimal solutions and dedicated service.
           </p>
         </div>
-        <div
-          className="grid
+        <div className="relative">
+          <div
+            className="grid
                 grid-cols-1
                 sm:grid-cols-1
                 md:grid-cols-2
@@ -72,10 +71,11 @@ export const ProductShowcase = () => {
                 mt-10
                 px-20
                 max-w-[1300px] mx-auto cursor-pointer"
-        >
-          {featuredProducts.map((product) => (
-            <FeaturedProduct key={product.name} {...product} />
-          ))}
+          >
+            {featuredProducts.map((product) => (
+              <FeaturedProduct key={product.name} {...product} />
+            ))}
+          </div>
         </div>
       </div>
     </section>
