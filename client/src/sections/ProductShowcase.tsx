@@ -59,7 +59,7 @@ export const ProductShowcase = () => {
             offering you optimal solutions and dedicated service.
           </p>
         </div>
-        <div className="relative">
+        <div className="flex">
           <div
             className="grid
                 grid-cols-1
@@ -70,7 +70,7 @@ export const ProductShowcase = () => {
                 gap-10
                 mt-10
                 px-20
-                max-w-[1300px] mx-auto cursor-pointer"
+                max-w-[1300px] mx-auto cursor-pointer justify-center"
           >
             {featuredProducts.map((product) => (
               <FeaturedProduct key={product.name} {...product} />
