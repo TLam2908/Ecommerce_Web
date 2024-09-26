@@ -7,5 +7,5 @@ export const hashValue = async (value: string, saltRounds?: number): Promise<str
 
 
 export const compareValue = async (value: string, hashValue: string) => {
-    bcrypt.compare(value, hashValue).catch(() => false);
+    return bcrypt.compare(value, hashValue).catch(() => false);
 }

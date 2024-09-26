@@ -1,10 +1,13 @@
 import { PrismaClient } from "@prisma/client";
-import jwt from "jsonwebtoken"
-const moment = require('moment-timezone');
-import { hashValue, compareValue } from "../utils/bcrypt";
+import jwt from "jsonwebtoken";
+const moment = require("moment-timezone");
 import { JWT_REFRESH_SECRET, JWT_SECRET } from "../constants/env";
-import appAssert from "../utils/appAssert";
 import { CONFLICT, UNAUTHORIZED } from "../constants/http";
+
+import appAssert from "../utils/appAssert";
+import { refreshTokenOptions } from "../utils/jwt";
+import { signToken } from "../utils/jwt";
+import { hashValue, compareValue } from "../utils/bcrypt";
 
 const prisma = new PrismaClient();
 
@@ -39,7 +42,7 @@ export const createAccount = async (data: CreateAcountParams) => {
       name: data.name,
       role: "user",
       verified: false,
-      createAt: moment().tz('Asia/Ho_Chi_Minh').toISOString()
+      createAt: moment().tz("Asia/Ho_Chi_Minh").toISOString(),
     },
   });
 
@@ -48,15 +51,15 @@ export const createAccount = async (data: CreateAcountParams) => {
     email: user.email,
     name: user.name,
     verified: user.verified,
-    createAt: user.createAt
-  }
+    createAt: user.createAt,
+  };
 
   // create verification code
   const verificationCode = await prisma.verificationCode.create({
     data: {
       user_id: user.id,
       type: "verify_email",
-      expiresAt: moment().tz('Asia/Ho_Chi_Minh').add(24, 'hours').toISOString(), // 24 hours
+      expiresAt: moment().tz("Asia/Ho_Chi_Minh").add(24, "hours").toISOString(), // 24 hours
     },
   });
 
@@ -66,27 +69,18 @@ export const createAccount = async (data: CreateAcountParams) => {
     data: {
       user_id: user.id,
       userAgent: data.userAgent,
-      expiresAt: moment().tz('Asia/Ho_Chi_Minh').add(30, 'days').toISOString(), // 30 days
+      expiresAt: moment().tz("Asia/Ho_Chi_Minh").add(30, "days").toISOString(), // 30 days
     },
   });
 
   // sign access token and refresh token
-  const refreshToken = jwt.sign(
-    {
-      session_id: session.id,
-    },
-    JWT_REFRESH_SECRET,
-    { expiresIn: "30d", audience: ["user"] }
-  );
+  const refreshToken = signToken({sessionId: session.id}, refreshTokenOptions);
 
-  const accessToken = jwt.sign(
-    {
-      session_id: session.id,
-      user_id: user.id,
-    },
-    JWT_SECRET,
-    { expiresIn: "30m", audience: ["user"] }
-  );
+  const accessToken = signToken({
+    sessionId: session.id,
+    user_id: user.id,
+  });
+
 
   // return user and tokens
   return {
@@ -102,7 +96,11 @@ type LoginParams = {
   userAgent?: string;
 };
 
-export const loginUser = async ({email, password, userAgent}: LoginParams) => {
+export const loginUser = async ({
+  email,
+  password,
+  userAgent,
+}: LoginParams) => {
   // get user by email
   const user = await prisma.user.findUnique({
     where: {
@@ -115,8 +113,41 @@ export const loginUser = async ({email, password, userAgent}: LoginParams) => {
   // validate password
   const validPassword = await compareValue(password, user.password);
   appAssert(validPassword, UNAUTHORIZED, "Invalid password");
-  
+
   // create session
+  const userId = user.id;
+  const session = await prisma.session.create({
+    data: {
+      user_id: userId,
+      userAgent: userAgent,
+      expiresAt: moment().tz("Asia/Ho_Chi_Minh").add(30, "days").toISOString(), // 30 days
+    },
+  });
+
+  const sessionInfo = {
+    sessionId: session.id,
+  };
+
   // sign access token and refresh token
+
+  const refreshToken = signToken(sessionInfo, refreshTokenOptions);
+
+  const accessToken = signToken({
+    ...sessionInfo,
+    user_id: userId,
+  });
+
+  const safeUser = {
+    id: user.id,
+    email: user.email,
+    name: user.name,
+    verified: user.verified,
+  };
+
   // return user and tokens
-}
+  return {
+    safeUser,
+    accessToken,
+    refreshToken,
+  };
+};

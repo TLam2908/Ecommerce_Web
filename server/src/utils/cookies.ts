@@ -29,3 +29,10 @@ export const setAuthCookies = ({ res, accessToken, refreshToken }: Params) => {
     res.cookie("accessToken", accessToken, getAccessTokenCookieOptions()).cookie("refreshToken", refreshToken, getRefreshTokenCookieOptions());
     return res
 }
+
+export const clearAuthCookies = (res: Response) => {
+    res.clearCookie("accessToken").clearCookie("refreshToken", {
+        path: "/auth/refresh"
+    });
+    return res
+}
