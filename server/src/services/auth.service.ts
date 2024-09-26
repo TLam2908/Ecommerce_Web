@@ -1,11 +1,11 @@
 import { PrismaClient } from "@prisma/client";
 import jwt from "jsonwebtoken";
-const moment = require("moment-timezone");
+const moment = require("moment");
 import { JWT_REFRESH_SECRET, JWT_SECRET } from "../constants/env";
-import { CONFLICT, UNAUTHORIZED } from "../constants/http";
+import { CONFLICT, NOT_FOUND, UNAUTHORIZED } from "../constants/http";
 
 import appAssert from "../utils/appAssert";
-import { refreshTokenOptions } from "../utils/jwt";
+import { refreshTokenOptions, RefreshTokenPayload, verifyToken } from "../utils/jwt";
 import { signToken } from "../utils/jwt";
 import { hashValue, compareValue } from "../utils/bcrypt";
 
@@ -42,7 +42,7 @@ export const createAccount = async (data: CreateAcountParams) => {
       name: data.name,
       role: "user",
       verified: false,
-      createAt: moment().tz("Asia/Ho_Chi_Minh").toISOString(),
+      createAt: moment().format()
     },
   });
 
@@ -59,7 +59,8 @@ export const createAccount = async (data: CreateAcountParams) => {
     data: {
       user_id: user.id,
       type: "verify_email",
-      expiresAt: moment().tz("Asia/Ho_Chi_Minh").add(24, "hours").toISOString(), // 24 hours
+      createdAt: moment().format(),
+      expiresAt: moment().add(24, "hours").format(), // 24 hours
     },
   });
 
@@ -69,7 +70,8 @@ export const createAccount = async (data: CreateAcountParams) => {
     data: {
       user_id: user.id,
       userAgent: data.userAgent,
-      expiresAt: moment().tz("Asia/Ho_Chi_Minh").add(30, "days").toISOString(), // 30 days
+      createdAt: moment().format(),
+      expiresAt: moment().add(30, "days").format(), // 30 days
     },
   });
 
@@ -78,9 +80,8 @@ export const createAccount = async (data: CreateAcountParams) => {
 
   const accessToken = signToken({
     sessionId: session.id,
-    user_id: user.id,
+    userId: user.id
   });
-
 
   // return user and tokens
   return {
@@ -120,7 +121,8 @@ export const loginUser = async ({
     data: {
       user_id: userId,
       userAgent: userAgent,
-      expiresAt: moment().tz("Asia/Ho_Chi_Minh").add(30, "days").toISOString(), // 30 days
+      createdAt: moment().format(),
+      expiresAt: moment().add(30, "days").format(), // 30 days
     },
   });
 
@@ -134,7 +136,7 @@ export const loginUser = async ({
 
   const accessToken = signToken({
     ...sessionInfo,
-    user_id: userId,
+    userId: userId,
   });
 
   const safeUser = {
@@ -151,3 +153,91 @@ export const loginUser = async ({
     refreshToken,
   };
 };
+
+
+export const refreshUserAccessToken = async (refreshToken: string) => {
+  const { payload } = verifyToken<RefreshTokenPayload>(refreshToken, {
+    secret: refreshTokenOptions.secret
+  })
+  appAssert(payload, UNAUTHORIZED, "Invalid refresh token")
+
+  const session = await prisma.session.findUnique({
+    where: {
+      id: payload.sessionId
+    }
+  })
+  const now = Date.now()
+  appAssert(session && session.expiresAt.getTime() > now, UNAUTHORIZED, "Session expired")
+
+  // refresh session if it expires in next 24 hours
+  const sessionNeedsRefresh = session.expiresAt.getTime() - now < 1000 * 60 * 60 * 24 // 24 hours
+  if (sessionNeedsRefresh) {
+    await prisma.session.update({
+      where: {
+        id: session.id
+      },
+      data: {
+        expiresAt: moment().add(30, "days").format()
+      }
+    })
+  }
+
+  // sign new refresh token
+  const newRefreshToken = sessionNeedsRefresh ? signToken({sessionId: session.id}, refreshTokenOptions) : undefined
+
+  // sign new access token
+  const accessToken = signToken({
+    sessionId: session.id,
+    userId: session.user_id
+  })
+
+  return {
+    accessToken,
+    newRefreshToken
+  }
+}
+
+export const verifyEmail = async (code: string) => {
+  // get the verification code
+  const codeId = parseInt(code, 10)
+  const validCode = await prisma.verificationCode.findUnique({
+    where: {
+      id: codeId,
+      type: "verify_email",
+      expiresAt: { gt: new Date() }
+    }
+  })
+
+  appAssert(validCode, NOT_FOUND, "Invalid or expired verification code")
+
+  // get user by id
+  // update user verified to true
+  const updatedUser = await prisma.user.update({
+    where: {
+      id: validCode.user_id
+    },
+    data: {
+      verified: true
+    }
+  })
+
+  appAssert(updatedUser, NOT_FOUND, "Failed to verify email")
+
+    // delete verification code
+  await prisma.verificationCode.delete({
+    where: {
+      id: validCode.id
+    }
+  })
+
+  const safeUser = {
+    id: updatedUser.id,
+    email: updatedUser.email,
+    name: updatedUser.name,
+    verified: updatedUser.verified,
+  }
+
+  return {
+    safeUser
+  }
+}
