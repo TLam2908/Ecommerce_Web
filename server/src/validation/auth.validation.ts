@@ -18,3 +18,10 @@ export const registerSchema = z.object({
 })
 
 export const verificationCodeSchema = z.string().min(1).max(24)
+
+export const emailSchema = z.string().email().min(1).max(255)
+
+export const resetPasswordSchema = z.object({
+    password: z.string().min(8).max(255),
+    verificationCode: verificationCodeSchema
+})

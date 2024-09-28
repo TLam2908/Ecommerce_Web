@@ -2,12 +2,10 @@ import catchErrors from "../utils/catchError";
 import { verifyToken } from "../utils/jwt";
 import { clearAuthCookies, setAuthCookies, getAccessTokenCookieOptions, getRefreshTokenCookieOptions } from "../utils/cookies";
 
-import { createAccount, loginUser, refreshUserAccessToken, verifyEmail } from "../services/auth.service";
+import { createAccount, loginUser, refreshUserAccessToken, verifyEmail, sendPasswordResetEmail, resetPassword } from "../services/auth.service";
 import { CREATED, OK, UNAUTHORIZED } from "../constants/http";
 
-import { registerSchema } from "../validation/auth.validation";
-import { loginSchema } from "../validation/auth.validation";
-import { verificationCodeSchema } from "../validation/auth.validation";
+import { emailSchema, registerSchema, loginSchema, verificationCodeSchema, resetPasswordSchema } from "../validation/auth.validation";
 
 import { PrismaClient } from "@prisma/client";
 import appAssert from "../utils/appAssert";
@@ -87,4 +85,24 @@ export const verifyEmailHandler = catchErrors(async (req, res) => {
     return res.status(OK).json({
         message: "Email was successfully verified",
     })
+})
+
+export const sendPasswordResetHandler = catchErrors(async (req, res) => {
+  const email = emailSchema.parse(req.body.email);
+
+  await sendPasswordResetEmail(email);
+
+  return res.status(OK).json({
+    message: "Password reset email sent",
+  })
+})
+
+export const resetPasswordHandler = catchErrors(async (req, res) => {
+  const request = resetPasswordSchema.parse(req.body);
+
+  await resetPassword(request);
+
+  return clearAuthCookies(res).status(OK).json({
+    message: "Password reset successful",
+  })
 })
