@@ -14,7 +14,7 @@ interface CardWrapperProps {
 
 const CardWrapper = ({label, title, backButtonHref, backButtonLabel, children}: CardWrapperProps) => {
     return (
-      <Card className="xl:w-[500px] lg:w-[500px] md:shadow-md md:border border-none shadow-none">
+      <Card className=" lg:w-[500px] md:shadow-md md:border border-none shadow-none">
           <CardHeader>
               <AuthHeader label={label} title={title} />
           </CardHeader>

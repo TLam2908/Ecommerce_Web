@@ -119,7 +119,7 @@ const RegisterForm = () => {
               className="w-full"
               disabled={isLoading}
             >
-               {isLoading && (
+              {isLoading && (
                 <ImSpinner8 className="mr-2 h-4 w-4 animate-spin" />
               )}
               Create new Account

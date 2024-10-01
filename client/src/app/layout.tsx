@@ -1,14 +1,16 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import QueryWrapper from "@/config/QueryWrapper";
+import { Toaster } from "react-hot-toast";
 import "./globals.css";
 
 const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
+  src: "../assets/fonts/GeistVF.woff",
   variable: "--font-geist-sans",
   weight: "100 900",
 });
 const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
+  src: "../assets/fonts/GeistMonoVF.woff",
   variable: "--font-geist-mono",
   weight: "100 900",
 });
@@ -25,11 +27,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#EAEEFE]`}
-      >
-        {children}
-      </body>
+      <QueryWrapper>
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#EAEEFE]`}
+        >
+          {children}
+          <Toaster />
+        </body>
+      </QueryWrapper>
     </html>
   );
 }

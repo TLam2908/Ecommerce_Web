@@ -12,16 +12,31 @@ import {
 } from "@/components/ui/form";
 import { ImSpinner8 } from "react-icons/im";
 import { FcGoogle } from "react-icons/fc";
-import { LoginSchema } from "@/schema/auth";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { Button } from "../ui/button";
+
+import { LoginSchema } from "@/schema/auth";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useState } from "react";
+import { useMutation } from "@tanstack/react-query"
+import { login } from "@/lib/authApi";
+import toast from "react-hot-toast";
 
 const LoginForm = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+
+  const { mutate: signIn, isError, isPending } = useMutation({
+    mutationFn: login,
+    onSuccess: () => {
+      router.replace("/main")
+    }
+  });
+
+  if (isError) {
+    toast.error("Invalid email or password");
+  }
 
   const form = useForm({
     resolver: zodResolver(LoginSchema),
@@ -33,11 +48,7 @@ const LoginForm = () => {
 
   const onSubmit = (data: z.infer<typeof LoginSchema>) => {
     console.log(data);
-    setIsLoading(true);
-
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 3000);
+    signIn(data);
   };
 
   return (
@@ -87,14 +98,19 @@ const LoginForm = () => {
               )}
             />
           </div>
+          <div className="cursor-pointer">
+            <p className="text-[12px] text-blue-500 justify-end flex">
+              Forgot your Password?
+            </p>
+          </div>
           <div>
             <Button
               type="submit"
               size="lg"
               className="w-full"
-              disabled={isLoading}
+              disabled={isPending}
             >
-              {isLoading && (
+              {isPending && (
                 <ImSpinner8 className="mr-2 h-4 w-4 animate-spin" />
               )}
               Sign In with Email
@@ -111,20 +127,22 @@ const LoginForm = () => {
             </span>
           </div>
         </div>
+        
         <Button
           variant="outline"
           type="button"
-          disabled={isLoading}
+          disabled={isPending}
           size="lg"
           className="w-full"
         >
-          {isLoading ? (
+          {isPending ? (
             <ImSpinner8 className="mr-2 h-4 w-4 animate-spin" />
           ) : (
             <FcGoogle className="mr-2 h-4 w-4" />
           )}{" "}
-          Google
+          Sign in with Google
         </Button>
+        
       </Form>
     </CardWarpper>
   );

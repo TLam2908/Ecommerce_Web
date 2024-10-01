@@ -2,9 +2,9 @@ import { FaCheck } from "react-icons/fa6";
 import { twMerge } from "tailwind-merge";
 const services = [
   {
+    id: 1,
     title: "Products & Search System",
-    buttonText: "Get started for free",
-    popular: false,
+    buttonText: "Sign up now",
     inverse: false,
     features: [
       "Product listing",
@@ -14,11 +14,11 @@ const services = [
     ],
   },
   {
+    id: 2,
     title: "Customer Accounts & Service",
     monthlyPrice: 9,
-    buttonText: "Sign up now",
-    popular: true,
     inverse: true,
+    buttonText: "Sign up now",
     features: [
       "Customer registration",
       "Secure date encryption",
@@ -27,10 +27,9 @@ const services = [
     ],
   },
   {
+    id: 3,
     title: "Logistics & Payment Gateway",
-    monthlyPrice: 19,
     buttonText: "Sign up now",
-    popular: false,
     inverse: false,
     features: [
       "Shipping integration",
@@ -62,7 +61,7 @@ export const Service = () => {
         <div className="grid xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-2 gap-10 mt-20 px-32">
           {services.map((service) => (
             <div
-              key={service.title}
+              key={service.id}
               className={twMerge(
                 "p-10 rounded-3xl border border-[#F1F1F1] shadow-[0_7px_14px_#EAEAEA]",
                 service.inverse === true && "border-black bg-black text-white"
@@ -88,7 +87,7 @@ export const Service = () => {
               <ul className="flex flex-col gap-5 mt-8">
                 {service.features.map((feature) => (
                   <li
-                    key={service.title}
+                    key={feature}
                     className="flex flex-row text-sm items-center gap-4"
                   >
                     <FaCheck

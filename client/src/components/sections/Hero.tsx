@@ -4,11 +4,13 @@ import cogImage from "@/assets/landingPage/cog.png";
 import cylinderImage from "@/assets/landingPage/cylinder.png";
 import noodleImage from "@/assets/landingPage/noodle.png";
 
-import { motion, useMotionValueEvent, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
-import Image from "next/image";
+
+import { useRouter } from "next/navigation";
 
 export const Hero = () => {
+  const router = useRouter();
   const heroRef = useRef(null); 
   const { scrollYProgress } = useScroll({
     target: heroRef,
@@ -34,10 +36,10 @@ export const Hero = () => {
             repair and upgrade needs
           </p>
           <div className="flex gap-4 items-center mt-[30px]">
-            <button className="bg-black text-white px-4 py-2 rounded-lg font-medium inline-flex items-center justify-center tracking-tight">
+            <button className="bg-black text-white px-6 py-2 rounded-lg font-medium inline-flex items-center justify-center tracking-tight" onClick={() => router.push("/auth/login")}>
               Log in
             </button>
-            <button className="bg-black bg-transparent">
+            <button className="bg-black bg-transparent" onClick={() => router.push("/main")}>
               <span className="text-black">Shop now</span>
               <GoArrowRight
                 color="black"
