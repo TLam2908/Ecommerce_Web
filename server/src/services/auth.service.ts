@@ -71,14 +71,16 @@ export const createAccount = async (data: CreateAcountParams) => {
 
   const url = `${APP_ORIGIN}/email/verify/${verificationCode.id}`;
 
-  const { error } = await sendMail({
-    to: user.email,
-    ...getVerifyEmailTemplate(url),
-  })
-
-  if (error) {
-    console.log(error)
+  try {
+    const response = await sendMail({
+      to: user.email,
+      ...getVerifyEmailTemplate(url), // Ensure this returns the required fields like subject, text, html
+    });
+    console.log("Email sent successfully", response); // Handle success case
+  } catch (error) {
+    console.error(error); // Handle error case
   }
+  
 
   // create session
   const session = await prisma.session.create({

@@ -13,8 +13,6 @@ export const RegisterSchema = z.object({
     confirmPassword: z.string().min(8, {
         message: 'Password must be at least 8 characters long'
     }) 
-}).refine(data => data.password === data.confirmPassword, {
-    message: "Password and confirm password must be the same",
 })
 
 export const LoginSchema = z.object({
@@ -23,5 +21,11 @@ export const LoginSchema = z.object({
     }),
     password: z.string().min(8, {
         message: 'Password must be at least 8 characters long'
+    })
+})
+
+export const ForgotPasswordSchema = z.object({
+    email: z.string().email({
+        message: 'Invalid email address'
     })
 })

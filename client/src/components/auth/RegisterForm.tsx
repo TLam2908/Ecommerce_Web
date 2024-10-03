@@ -11,16 +11,34 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { ImSpinner8 } from "react-icons/im";
+import { Input } from "@/components/ui/input";
+import { Button } from "../ui/button";
+import toast from "react-hot-toast";
+
 import { RegisterSchema } from "@/schema/auth";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Input } from "@/components/ui/input";
-import { Button } from "../ui/button";
 import { z } from "zod";
-import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { register } from "@/lib/authApi";
+import { useRouter } from "next/navigation";
 
 const RegisterForm = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+  const {
+    mutate: signUp,
+    isError,
+    isPending,
+  } = useMutation({
+    mutationFn: register,
+    onError: (error) => {
+      toast.error("Internal server error");
+    },
+    onSuccess: () => {
+      router.replace("/");
+      toast.success("Register successful");
+    },
+  });
 
   const form = useForm({
     resolver: zodResolver(RegisterSchema),
@@ -34,11 +52,7 @@ const RegisterForm = () => {
 
   const onSubmit = (data: z.infer<typeof RegisterSchema>) => {
     console.log(data);
-    setIsLoading(true);
-
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 3000);
+    signUp(data);
   };
 
   return (
@@ -117,9 +131,9 @@ const RegisterForm = () => {
               type="submit"
               size="lg"
               className="w-full"
-              disabled={isLoading}
+              disabled={isPending}
             >
-              {isLoading && (
+              {isPending && (
                 <ImSpinner8 className="mr-2 h-4 w-4 animate-spin" />
               )}
               Create new Account

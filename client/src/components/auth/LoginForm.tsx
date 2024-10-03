@@ -14,6 +14,7 @@ import { ImSpinner8 } from "react-icons/im";
 import { FcGoogle } from "react-icons/fc";
 import { Input } from "@/components/ui/input";
 import { Button } from "../ui/button";
+import toast from "react-hot-toast";
 
 import { LoginSchema } from "@/schema/auth";
 import { useRouter } from "next/navigation";
@@ -22,21 +23,20 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useMutation } from "@tanstack/react-query"
 import { login } from "@/lib/authApi";
-import toast from "react-hot-toast";
 
 const LoginForm = () => {
   const router = useRouter();
 
   const { mutate: signIn, isError, isPending } = useMutation({
     mutationFn: login,
+    onError: (error) => {
+      toast.error(error.message);
+    },
     onSuccess: () => {
       router.replace("/main")
+      toast.success("Login successful");
     }
   });
-
-  if (isError) {
-    toast.error("Invalid email or password");
-  }
 
   const form = useForm({
     resolver: zodResolver(LoginSchema),

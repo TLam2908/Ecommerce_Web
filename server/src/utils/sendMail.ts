@@ -7,13 +7,12 @@ type Params = {
   html: string;
 };
 
-export const sendMail = async ({ to, subject, text, html }: Params) => {
-    const response = await resend.emails.send({
+export const sendMail = async ({ to, subject, text, html }: Params) => 
+    await resend.emails.send({
         from: "onboarding@resend.dev",
         to: to,
         subject,
         text,
         html
     })
-    return response
-};
+
