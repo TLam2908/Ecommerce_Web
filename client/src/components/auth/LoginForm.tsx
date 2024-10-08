@@ -27,7 +27,7 @@ import { login } from "@/lib/authApi";
 const LoginForm = () => {
   const router = useRouter();
 
-  const { mutate: signIn, isError, isPending } = useMutation({
+  const { mutate: loginHandler, isError, isPending } = useMutation({
     mutationFn: login,
     onError: (error) => {
       toast.error(error.message);
@@ -48,7 +48,7 @@ const LoginForm = () => {
 
   const onSubmit = (data: z.infer<typeof LoginSchema>) => {
     console.log(data);
-    signIn(data);
+    loginHandler(data);
   };
 
   return (
@@ -98,7 +98,7 @@ const LoginForm = () => {
               )}
             />
           </div>
-          <div className="cursor-pointer">
+          <div className="cursor-pointer" onClick={() => router.push('/email/forgot')}>
             <p className="text-[12px] text-blue-500 justify-end flex">
               Forgot your Password?
             </p>

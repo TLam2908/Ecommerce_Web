@@ -99,7 +99,7 @@ export const sendPasswordResetHandler = catchErrors(async (req, res) => {
 
 export const resetPasswordHandler = catchErrors(async (req, res) => {
   const request = resetPasswordSchema.parse(req.body);
-
+  console.log(request);
   await resetPassword(request);
 
   return clearAuthCookies(res).status(OK).json({

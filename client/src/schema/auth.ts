@@ -29,3 +29,9 @@ export const ForgotPasswordSchema = z.object({
         message: 'Invalid email address'
     })
 })
+
+export const ResetPasswordSchema = z.object({
+    password: z.string().min(8, {
+        message: 'Password must be at least 8 characters long'
+    }),
+})

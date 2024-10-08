@@ -26,7 +26,7 @@ import { useRouter } from "next/navigation";
 const RegisterForm = () => {
   const router = useRouter();
   const {
-    mutate: signUp,
+    mutate: registerHandler,
     isError,
     isPending,
   } = useMutation({
@@ -52,7 +52,7 @@ const RegisterForm = () => {
 
   const onSubmit = (data: z.infer<typeof RegisterSchema>) => {
     console.log(data);
-    signUp(data);
+    registerHandler(data);
   };
 
   return (
