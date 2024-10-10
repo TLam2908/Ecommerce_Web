@@ -21,22 +21,37 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useMutation } from "@tanstack/react-query"
+import { useMutation } from "@tanstack/react-query";
 import { login } from "@/lib/authApi";
 
 const LoginForm = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirectUrl = searchParams.get('redirectUrl') || "/main";
-  const { mutate: loginHandler, isError, isPending } = useMutation({
+  const redirectUrl = searchParams.get("redirectUrl") || "/main";
+  const {
+    mutate: loginHandler,
+    isError,
+    isPending,
+  } = useMutation({
     mutationFn: login,
     onError: (error) => {
       toast.error(error.message);
     },
-    onSuccess: () => {
-      router.replace(redirectUrl)
-      toast.success("Login successful");
-    }
+    onSuccess: (response) => {
+      console.log(response)
+      const loginReturnData = response.data
+      if (loginReturnData) {
+        if (loginReturnData.role === 'admin') {
+          router.replace("/admin")
+          toast.success(loginReturnData.message);
+
+        } else {
+          router.replace(redirectUrl);
+          toast.success(loginReturnData.message);
+
+        }
+      }
+    },
   });
 
   const form = useForm({
@@ -99,7 +114,10 @@ const LoginForm = () => {
               )}
             />
           </div>
-          <div className="cursor-pointer" onClick={() => router.push('/email/forgot')}>
+          <div
+            className="cursor-pointer"
+            onClick={() => router.push("/email/forgot")}
+          >
             <p className="text-[12px] text-blue-500 justify-end flex">
               Forgot your Password?
             </p>
@@ -128,7 +146,7 @@ const LoginForm = () => {
             </span>
           </div>
         </div>
-        
+
         <Button
           variant="outline"
           type="button"
@@ -143,7 +161,6 @@ const LoginForm = () => {
           )}{" "}
           Sign in with Google
         </Button>
-        
       </Form>
     </CardWarpper>
   );

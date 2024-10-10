@@ -67,7 +67,7 @@ export const createAccount = async (data: CreateAcountParams) => {
     },
   });
 
-  // send verification email
+  //send verification email
 
   const url = `${APP_ORIGIN}/email/verify/${verificationCode.id}`;
 
@@ -160,6 +160,7 @@ export const loginUser = async ({
     id: user.id,
     email: user.email,
     name: user.name,
+    role: user.role,
     verified: user.verified,
   };
 

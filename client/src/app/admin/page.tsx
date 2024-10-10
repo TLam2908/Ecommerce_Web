@@ -1,7 +1,9 @@
-export default function Home() {
+const Admin = () => {
   return (
-   <div className="">
-    <div>Admin Dashboard</div>
-   </div>
+    <div>
+      <div className="text-black text-xl">Admin Dashboard</div>
+    </div>
   );
 }
+
+export default Admin
