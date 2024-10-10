@@ -1,23 +1,21 @@
 'use client';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useState, ReactNode } from 'react';
 
-import { ReactNode } from 'react';
+// Create the QueryClient instance
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+    },
+  },
+});
 
+// QueryWrapper component using the exported queryClient
 export default function QueryWrapper({ children }: { children: ReactNode }) {
-  // Tạo QueryClient và đảm bảo không tạo lại nó mỗi lần render
-  const [queryClient] = useState(() => new QueryClient({
-    defaultOptions: {
-      queries: {
-        retry: false,
-      }
-    }
-  }));
+  // Ensure the queryClient is not recreated on every render
+  const [client] = useState(() => queryClient);
 
-  return (
-    <QueryClientProvider client={queryClient}>
-      {children}
-    </QueryClientProvider>
-  );
+  return <QueryClientProvider client={client}>{children}</QueryClientProvider>;
 }

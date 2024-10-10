@@ -3,39 +3,39 @@ import wheelHub from "@/assets/landingPage/wheel-hub-bearing-assembly.png";
 import ignitionCoils from "@/assets/landingPage/ignition-coils.png";
 import brakeDiscs from "@/assets/landingPage/brake-discs.png";
 import cylinderHead from "@/assets/landingPage/cylinder-head.png";
-import waterPump from "@/assets/landingPage/water-pump.png";
 import massAir from "@/assets/landingPage/mass-air-flow.jpg";
+import headLight from "@/assets/landingPage/headlight.jpg"
 
 const featuredProducts = [
   {
     name: "Tranmission and Chassis",
     image: wheelHub,
-    description: "Rear axle hub and bearing assembly",
+    description: "Transmission and Chassis encompasses the components responsible for delivering power from the engine to the wheels",
   },
   {
-    name: "Electric",
+    name: "Electrical",
     image: ignitionCoils,
-    description: "Ignition coil used to provide the spark for the engine",
+    description: "The Electrical in vehicles covers all the components and systems powered by electricity, including essential functions.",
   },
   {
-    name: "Brake disc",
+    name: "Brake system",
     image: brakeDiscs,
-    description: "Front brake disc for braking system",
+    description: "The Brake System in a vehicle is crucial for ensuring safe stopping and deceleration. It consists of several key components that work together to slow down or stop the vehicle ",
   },
   {
     name: "Engine",
     image: cylinderHead,
-    description: "Cylinder head assembly for engine",
+    description: "Engine parts generally refers to all parts and systems directly involved in generating power for a vehicle",
   },
   {
-    name: "Water Pump",
-    image: waterPump,
-    description: "Engine water pump for cooling system",
+    name: "Body parts",
+    image: headLight,
+    description: "The Body Part in the automotive sector refers to all the external and structural components of a vehicle",
   },
   {
-    name: "Mass Air Flow Sensor",
+    name: "Fuel system",
     image: massAir,
-    description: "Mass air flow sensor for engine",
+    description: "Fuel system includes components and systems responsible for delivering fuel to the engine.",
   },
 ];
 

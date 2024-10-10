@@ -17,7 +17,7 @@ import { Button } from "../ui/button";
 import toast from "react-hot-toast";
 
 import { LoginSchema } from "@/schema/auth";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -26,14 +26,15 @@ import { login } from "@/lib/authApi";
 
 const LoginForm = () => {
   const router = useRouter();
-
+  const searchParams = useSearchParams();
+  const redirectUrl = searchParams.get('redirectUrl') || "/main";
   const { mutate: loginHandler, isError, isPending } = useMutation({
     mutationFn: login,
     onError: (error) => {
       toast.error(error.message);
     },
     onSuccess: () => {
-      router.replace("/main")
+      router.replace(redirectUrl)
       toast.success("Login successful");
     }
   });

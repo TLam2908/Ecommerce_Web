@@ -35,7 +35,7 @@ const RegisterForm = () => {
       toast.error("Internal server error");
     },
     onSuccess: () => {
-      router.replace("/");
+      router.replace("/main");
       toast.success("Register successful");
     },
   });

@@ -33,3 +33,5 @@ export const sendPasswordResetEmail = async (email: string) => {
 export const resetPassword = async (data: { password: string;  verificationCode: string }) => {
   return AUTH_API.post("/auth/password/reset", data);
 }
+
+export const getUser = async () => AUTH_API.get("/user");
