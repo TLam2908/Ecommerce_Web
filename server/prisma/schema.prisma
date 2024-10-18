@@ -41,14 +41,32 @@ model Autopart {
   category_id Int
   image_src String
   image_id String
-  model_compatiple String
-  year_compatible String
+
+  Autopart_Model Autopart_Model[]
   
   manufacturer Manufacturer @relation(fields: [manufacturer_id], references: [id])
   category Category @relation(fields: [category_id], references: [id])
 
 
   CartItem CartItem[]
+}
+
+model Autopart_Model {
+  id Int @id @default(autoincrement())
+  autopart_id Int
+  model_id Int
+
+  Autopart Autopart @relation(fields: [autopart_id], references: [id])
+  Model Model @relation(fields: [model_id], references: [id])
+}
+
+model Model {
+  id Int @id @default(autoincrement())
+  name String
+  make String
+  year String
+
+  Autopart_Model Autopart_Model[]
 }
 
 model User {
@@ -66,7 +84,6 @@ model User {
 
 
   Cart Cart[]
-  Payment Payment[]
   VerificationCode VerificationCode[]
   Session Session[]
 }
@@ -120,6 +137,13 @@ model Payment {
   payment_status String
   payment_date DateTime
 
-  User User @relation(fields: [user_id], references: [id])
   Cart Cart @relation(fields: [cart_id], references: [id])
+}
+
+model Billboard {
+  id Int @id @default(autoincrement())
+  title String
+  image_src String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

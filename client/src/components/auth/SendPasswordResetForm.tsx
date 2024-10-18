@@ -20,7 +20,7 @@ import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { sendPasswordResetEmail } from "@/lib/authApi";
-import { ForgotPasswordSchema } from "@/schema/auth";
+import { ForgotPasswordSchema } from "@/interface/auth";
 import toast from "react-hot-toast";
 
 const SendPasswordResetForm = () => {

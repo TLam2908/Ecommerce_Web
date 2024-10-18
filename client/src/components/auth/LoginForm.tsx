@@ -16,7 +16,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "../ui/button";
 import toast from "react-hot-toast";
 
-import { LoginSchema } from "@/schema/auth";
+import { LoginSchema } from "@/interface/auth";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -88,6 +88,7 @@ const LoginForm = () => {
                       {...field}
                       type="email"
                       placeholder="Enter your email"
+                      className="focus:border focus:border-primary"
                     />
                   </FormControl>
                   <FormMessage></FormMessage>
@@ -107,6 +108,7 @@ const LoginForm = () => {
                       {...field}
                       type="password"
                       placeholder="Enter your password"
+                      className="focus:border focus:border-primary"
                     />
                   </FormControl>
                   <FormMessage></FormMessage>

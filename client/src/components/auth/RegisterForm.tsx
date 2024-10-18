@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "../ui/button";
 import toast from "react-hot-toast";
 
-import { RegisterSchema } from "@/schema/auth";
+import { RegisterSchema } from "@/interface/auth";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -76,6 +76,7 @@ const RegisterForm = () => {
                       {...field}
                       type="email"
                       placeholder="Enter your email"
+                      className="focus:border focus:border-primary"
                     />
                   </FormControl>
                   <FormMessage></FormMessage>
@@ -89,7 +90,11 @@ const RegisterForm = () => {
                 <FormItem>
                   <FormLabel className="text-sm font-semibold">Name</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="Enter your name" />
+                    <Input
+                      {...field}
+                      placeholder="Enter your name"
+                      className="focus:border focus:border-primary"
+                    />
                   </FormControl>
                   <FormMessage></FormMessage>
                 </FormItem>
@@ -104,7 +109,12 @@ const RegisterForm = () => {
                     Password
                   </FormLabel>
                   <FormControl>
-                    <Input {...field} type="password" placeholder="********" />
+                    <Input
+                      {...field}
+                      type="password"
+                      placeholder="********"
+                      className="focus:border focus:border-primary"
+                    />
                   </FormControl>
                   <FormMessage></FormMessage>
                 </FormItem>
@@ -119,7 +129,12 @@ const RegisterForm = () => {
                     Confirm Password
                   </FormLabel>
                   <FormControl>
-                    <Input {...field} type="password" placeholder="********" />
+                    <Input
+                      {...field}
+                      type="password"
+                      placeholder="********"
+                      className="focus:border focus:border-primary"
+                    />
                   </FormControl>
                   <FormMessage></FormMessage>
                 </FormItem>

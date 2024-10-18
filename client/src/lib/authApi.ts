@@ -12,6 +12,8 @@ interface RegisterParams {
   confirmPassword: string;
 }
 
+// auth
+
 export const login = async (data: LoginParams) => {
   return AUTH_API.post("/auth/login", data);
 };
@@ -34,4 +36,12 @@ export const resetPassword = async (data: { password: string;  verificationCode:
   return AUTH_API.post("/auth/password/reset", data);
 }
 
+// users
+
 export const getUser = async () => AUTH_API.get("/user");
+
+// billboards
+
+export const getBillboards = async () => AUTH_API.get("/billboards");
+export const getBillBoardById = async (id: string) => AUTH_API.get(`/billboards/${id}`);
+export const addBillboard = async (data: { title: string, image_src: string}) => AUTH_API.post("/billboards", data);

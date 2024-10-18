@@ -1,4 +1,4 @@
-import { FeaturedProduct } from "@/components/landingPage/FeaturedProduct";
+import { FeaturedProduct } from "@/components/FeaturedProduct";
 import wheelHub from "@/assets/landingPage/wheel-hub-bearing-assembly.png";
 import ignitionCoils from "@/assets/landingPage/ignition-coils.png";
 import brakeDiscs from "@/assets/landingPage/brake-discs.png";

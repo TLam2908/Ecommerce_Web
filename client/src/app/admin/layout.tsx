@@ -1,4 +1,6 @@
 "use client";
+import Navbar from "@/components/Navbar";
+
 import useAuth from "@/hook/useAuth";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -39,7 +41,12 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
     );
   }
 
-  return <> {user && <div>{children}</div>}</>;
+  return <> {user && (
+    <div className="bg-white h-full text-black">
+      <Navbar />
+      {children}
+    </div>
+  )}</>;
 };
 
 export default AdminLayout;

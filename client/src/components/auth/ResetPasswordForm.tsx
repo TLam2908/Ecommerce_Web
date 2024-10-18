@@ -25,7 +25,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { resetPassword } from "@/lib/authApi";
 
-import { ResetPasswordSchema } from "@/schema/auth";
+import { ResetPasswordSchema } from "@/interface/auth";
 
 const ResetPasswordForm = () => {
   const router = useRouter();

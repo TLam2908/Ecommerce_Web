@@ -13,6 +13,7 @@ const authenticate: RequestHandler = (req, res, next) => {
 
     req.userId = payload.userId;
     req.sessionId = payload.sessionId;
+    // delete session but if accessToken not expired -> authenticated
     // tell the express that the authentication is successful and move to the next middleware
     next()
 }

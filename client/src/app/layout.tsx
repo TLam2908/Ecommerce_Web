@@ -2,7 +2,10 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import QueryWrapper from "@/config/QueryWrapper";
 import { Toaster } from "react-hot-toast";
+import {Inter} from "next/font/google"
 import "./globals.css";
+
+const inter = Inter({ subsets: ["latin"] });
 
 const geistSans = localFont({
   src: "../assets/fonts/GeistVF.woff",
@@ -29,7 +32,7 @@ export default function RootLayout({
     <html lang="en">
       <QueryWrapper>
         <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#EAEEFE]`}
+          className={`${inter.className} antialiased bg-[#EAEEFE]`}
         >
           {children}
           <Toaster />
