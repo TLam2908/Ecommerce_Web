@@ -45,3 +45,4 @@ export const getUser = async () => AUTH_API.get("/user");
 export const getBillboards = async () => AUTH_API.get("/billboards");
 export const getBillBoardById = async (id: string) => AUTH_API.get(`/billboards/${id}`);
 export const addBillboard = async (data: { title: string, image_src: string}) => AUTH_API.post("/billboards", data);
+export const updateBillboard = async (data: { title: string, image_src: string, id: string}) => AUTH_API.put(`/billboards/${data.id}`, data);  

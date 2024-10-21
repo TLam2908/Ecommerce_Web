@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import "dotenv/config";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+const bodyParser = require('body-parser');
 
 import { PORT, NODE_ENV, APP_ORIGIN } from "./constants/env";
 import { OK } from "./constants/http";
@@ -15,8 +16,8 @@ import billboardRoutes from "./routes/billboard.route";
 
 const app = express();
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({limit: '50mb'}));
+app.use(express.urlencoded({limit: '50mb', extended: true}));
 app.use(
   cors({
     origin: APP_ORIGIN,

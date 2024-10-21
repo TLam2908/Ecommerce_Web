@@ -346,7 +346,7 @@ export const resetPassword = async ({password, verificationCode}: ResetPasswordP
   // delete the verification code
   await prisma.verificationCode.delete({
     where: {
-      id: validCode.id
+      id: codeId
     }
   })
 
