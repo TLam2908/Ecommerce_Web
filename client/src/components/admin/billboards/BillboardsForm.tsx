@@ -46,7 +46,7 @@ const BillboardsForm = () => {
     action = "Save changes";
   }
 
-  const { data } = useQuery({
+  const { data, isPending } = useQuery({
     queryKey: ["billboards", params.billboardId],
     queryFn: () => getBillBoardById(params.billboardId[0]),
     enabled: params.billboardId !== "new",

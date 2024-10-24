@@ -8,9 +8,15 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export const getBillboardHandler = catchErrors(async (req, res) => {
-    const billboard = await prisma.billboard.findMany()
+    const billboard = await prisma.billboard.findMany({
+        orderBy: {
+            createdAt: "desc"
+        }
+    })
     appAssert(billboard, NOT_FOUND, "Billboard not found")
-    return res.status(OK).json(billboard)
+    return res.status(OK).json({
+        data: billboard
+    })
 })
 
 export const getBillboardByIdHandler = catchErrors(async (req, res) => {

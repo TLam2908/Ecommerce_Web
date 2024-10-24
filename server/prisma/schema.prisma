@@ -28,8 +28,11 @@ model Category {
   name String
   description String?
   code String
-
+  billboard_id Int
+  
   Autopart Autopart[]
+  billboard Billboard @relation(fields: [billboard_id], references: [id])
+
 }
 
 model Autopart {
@@ -147,4 +150,6 @@ model Billboard {
   image_id String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  category Category[]
 }
