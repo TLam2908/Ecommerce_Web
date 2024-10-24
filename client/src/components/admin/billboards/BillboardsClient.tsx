@@ -30,7 +30,7 @@ const BillboardsClient = () => {
     <>
       <div className="flex items-center justify-between">
         <Heading
-          title={`Billboards (${formatedBillboards.length})`}
+          title={`Billboard${formatedBillboards.length === 1 ? '' : 's'} (${formatedBillboards.length})`}
           description="Manage billboard preferences"
         />
         <Button

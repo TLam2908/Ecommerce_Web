@@ -13,35 +13,41 @@ interface RegisterParams {
 }
 
 // auth
-
 export const login = async (data: LoginParams) => {
   return AUTH_API.post("/auth/login", data);
 };
-
 export const register = async (data: RegisterParams) => {
   return AUTH_API.post("/auth/register", data);
 };
-
 export const verifyEmail = async (id: string) => {
   return AUTH_API.get(`/auth/email/verify/${id}`);
 }
-
 export const sendPasswordResetEmail = async (email: string) => {
   return AUTH_API.post("/auth/password/forgot", { email });
 }
-
 // password forgot -> send password reset email
-
 export const resetPassword = async (data: { password: string;  verificationCode: string }) => {
   return AUTH_API.post("/auth/password/reset", data);
 }
 
 // users
+interface UserParam {
+  email: string;
+  password: string;
+  name: string;
+  confirmPassword: string;
+  address: string;
+  phone_number: string;
+  role: string;
+  image_src: string;
+}
 
-export const getUser = async () => AUTH_API.get("/user");
+export const getUser = async () => AUTH_API.get("/users/me");
+export const getUsers = async () => AUTH_API.get("/users");
+export const getUserById = async (id: string) => AUTH_API.get(`/users/${id}`);
+
 
 // billboards
-
 export const getBillboards = async () => AUTH_API.get("/billboards");
 export const getBillBoardById = async (id: string) => AUTH_API.get(`/billboards/${id}`);
 export const addBillboard = async (data: { title: string, image_src: string}) => AUTH_API.post("/billboards", data);

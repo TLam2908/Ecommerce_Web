@@ -80,7 +80,8 @@ model User {
   phone_number String?
   address String?
   role String
-  image String?
+  image_src String?
+  image_id String?
 
   createdAt DateTime
   verified Boolean @default(false)

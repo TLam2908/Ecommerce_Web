@@ -33,7 +33,7 @@ app.get("/", (req: Request, res: Response, next) => {
 app.use("/auth", authRoutes)
 
 // protected routes
-app.use("/user", authenticate, userRoutes);
+app.use("/users", authenticate, userRoutes);
 app.use("/sessions", authenticate, sessionRoutes);
 app.use("/billboards", authenticate, billboardRoutes);
 

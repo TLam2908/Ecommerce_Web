@@ -1,10 +1,16 @@
 import { Router } from 'express';
-import { getUserHandler } from '../controllers/user.controller';
+import { createUserHandler, deleteUserHandler, getUserByIdHandler, getUsersHandler, updateUserHandler, currentUserHandler } from '../controllers/user.controller';
 
 const userRoutes = Router();
 
-// prefix: /user
+// prefix: /users
 
-userRoutes.get("/", getUserHandler)
+userRoutes.post("/", createUserHandler)
+userRoutes.get("/me", currentUserHandler)
+userRoutes.get("/", getUsersHandler)
+userRoutes.get("/:id", getUserByIdHandler)
+userRoutes.put("/:id", updateUserHandler)
+userRoutes.delete("/:id", deleteUserHandler)
+
 
 export default userRoutes
