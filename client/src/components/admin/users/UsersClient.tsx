@@ -18,7 +18,7 @@ interface UsersClientProps {
     phone_number: string;
     address: string;
     role: string;
-    image: string;
+    image_src: string;
     verified: string;
     createdAt: string;
 }
@@ -40,7 +40,7 @@ const UsersClient = () => {
     phone_number: user.phone_number,
     address: user.address,
     role: user.role,
-    image: user.image,
+    image_src: user.image_src,
     verified: user.verified,
     createdAt: format(user.createdAt, "MMMM dd, yyyy"),
   })) || []

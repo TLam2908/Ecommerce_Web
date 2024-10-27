@@ -18,9 +18,11 @@ export const uploadImage = async ({image_src, uploadPreset} : uploadImageType) =
         upload_preset: uploadPreset,
         timeout: 100000
     })
+    const fix_id = uploadResponse.public_id.split('/')[1]
+
     return {
         image_src: uploadResponse.secure_url,
-        image_id: uploadResponse.public_id
+        image_id: fix_id
     }
 }
 

@@ -14,7 +14,9 @@ import { ImSpinner8 } from "react-icons/im";
 import { Input } from "@/components/ui/input";
 import { Button } from "../ui/button";
 import toast from "react-hot-toast";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
+import { useState } from "react";
 import { RegisterSchema } from "@/interface/auth";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -49,6 +51,9 @@ const RegisterForm = () => {
       confirmPassword: "",
     },
   });
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const onSubmit = (data: z.infer<typeof RegisterSchema>) => {
     console.log(data);
@@ -109,12 +114,25 @@ const RegisterForm = () => {
                     Password
                   </FormLabel>
                   <FormControl>
-                    <Input
-                      {...field}
-                      type="password"
-                      placeholder="********"
-                      className="focus:border focus:border-primary"
-                    />
+                    <div className="relative">
+                      <Input
+                        placeholder="********"
+                        className="focus:border border-black pr-10" // Add padding to make space for the icon
+                        type={showPassword ? "text" : "password"}
+                        {...field}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-600"
+                      >
+                        {showPassword ? (
+                          <FaRegEyeSlash size={20} />
+                        ) : (
+                          <FaRegEye size={20} />
+                        )}
+                      </button>
+                    </div>
                   </FormControl>
                   <FormMessage></FormMessage>
                 </FormItem>
@@ -129,12 +147,27 @@ const RegisterForm = () => {
                     Confirm Password
                   </FormLabel>
                   <FormControl>
-                    <Input
-                      {...field}
-                      type="password"
-                      placeholder="********"
-                      className="focus:border focus:border-primary"
-                    />
+                    <div className="relative">
+                      <Input
+                        placeholder="********"
+                        className="focus:border border-black"
+                        type={showConfirmPassword ? "text" : "password"}
+                        {...field}
+                      />
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setShowConfirmPassword(!showConfirmPassword)
+                        }
+                        className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-600"
+                      >
+                        {showConfirmPassword ? (
+                          <FaRegEyeSlash size={20} />
+                        ) : (
+                          <FaRegEye size={20} />
+                        )}
+                      </button>
+                    </div>
                   </FormControl>
                   <FormMessage></FormMessage>
                 </FormItem>

@@ -13,7 +13,6 @@ import { userSchema } from "../validation/user.validation";
 
 export const createUserHandler = catchErrors(async (req, res) => {
   const request = userSchema.parse(req.body);
-
   const safeUser = await createUser(request);
   return res.status(OK).json(safeUser);
 });
@@ -21,7 +20,9 @@ export const createUserHandler = catchErrors(async (req, res) => {
 export const getUserByIdHandler = catchErrors(async (req, res) => {
   const { id } = req.params;
   const safeUser = await getUserById(id);
-  return res.status(OK).json(safeUser);
+  return res.status(OK).json({
+    data: safeUser,
+  });
 });
 
 export const getUsersHandler = catchErrors(async (req, res) => {

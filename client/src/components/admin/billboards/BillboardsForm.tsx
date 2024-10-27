@@ -85,7 +85,7 @@ const BillboardsForm = () => {
   const [imageSrc, setImageSrc] = useState<string | null>(null); // State to manage the uploaded image
 
   const form = useForm({
-    // resolver: zodResolver(BillboardSchema),
+    resolver: zodResolver(BillboardSchema),
     defaultValues: {
       title: "",
       image_src: "",
@@ -115,13 +115,14 @@ const BillboardsForm = () => {
         <Heading title={title} description={description} />
       </div>
       <Separator />
-      <div className="p-8">
+      <div className="p-8 bg-white">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)} // Call handleSubmit with onSubmit
             className="space-y-8 w-full"
           >
             <div className="flex flex-col gap-5 w-[500px]">
+              {/* Title Field */}
               <FormField
                 control={form.control}
                 name="title"
@@ -138,30 +139,44 @@ const BillboardsForm = () => {
                         {...field}
                       />
                     </FormControl>
-                    <FormMessage></FormMessage>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
+
               {/* Image Upload Field */}
-              <FormItem>
-                <FormLabel className="text-xl font-semibold">Image</FormLabel>
-                <ImageUpload
-                  value={imageSrc ? imageSrc : ""}
-                  onChange={(image) => setImageSrc(image)}
-                  onRemove={() => setImageSrc(null)}
-                />
-                <FormMessage></FormMessage>
-              </FormItem>
+              <FormField
+                control={form.control}
+                name="image_src"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-xl font-semibold">Image</FormLabel>
+                    <FormControl>
+                      <ImageUpload
+                        value={field.value || imageSrc || ""} // Use field value or fallback to imageSrc or empty string
+                        onChange={(image) => {
+                          field.onChange(image); // Update form value
+                          setImageSrc(image); // Update component state if needed
+                        }}
+                        onRemove={() => {
+                          field.onChange(null); // Remove image from form state
+                          setImageSrc(null); // Update component state
+                        }}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
             <Button
               disabled={isAddPending || isUpdatePending}
               className="ml-auto"
               type="submit"
             >
-              {isAddPending ||
-                (isUpdatePending && (
-                  <ImSpinner8 className="animate-spin mr-2 h-4 w-4" />
-                ))}
+              {(isAddPending || isUpdatePending) && (
+                <ImSpinner8 className="animate-spin mr-2 h-4 w-4" />
+              )}
               {action}
             </Button>
           </form>

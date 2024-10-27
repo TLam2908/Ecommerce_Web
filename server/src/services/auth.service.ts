@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import jwt from "jsonwebtoken";
 const moment = require("moment");
 import { APP_ORIGIN, JWT_REFRESH_SECRET, JWT_SECRET } from "../constants/env";
-import { CONFLICT, NOT_FOUND, TOO_MANY_REQUESTS, UNAUTHORIZED, INTERNAL_SERVER_ERROR } from "../constants/http";
+import { CONFLICT, NOT_FOUND, TOO_MANY_REQUESTS, UNAUTHORIZED, INTERNAL_SERVER_ERROR, UNPROCESSABLE_CONTENT } from "../constants/http";
 
 import appAssert from "../utils/appAssert";
 import { refreshTokenOptions, RefreshTokenPayload, verifyToken } from "../utils/jwt";
@@ -10,6 +10,9 @@ import { signToken } from "../utils/jwt";
 import { hashValue, compareValue } from "../utils/bcrypt";
 import { sendMail } from "../utils/sendMail";
 import { getVerifyEmailTemplate, getPasswordResetTemplate } from "../utils/emailTemplates";
+import React from "react";
+import VerifyEmail from "../emails/verify";
+import ResetPassword from "../emails/resetPassword";
 
 
 const prisma = new PrismaClient();
@@ -70,13 +73,21 @@ export const createAccount = async (data: CreateAcountParams) => {
   //send verification email
 
   const url = `${APP_ORIGIN}/email/verify/${verificationCode.id}`;
-
   try {
     const response = await sendMail({
       to: user.email,
-      ...getVerifyEmailTemplate(url), // Ensure this returns the required fields like subject, text, html
+      subject: "Verify your email",
+      text: "Verify your email address",
+      react: React.createElement(VerifyEmail, { url }), // Assuming VerifyEmail is a React component
     });
-    console.log("Email sent successfully", response); // Handle success case
+    console.log("Email sent successfully", response);
+    if (
+      response?.error?.name === "application_error" ||
+      response?.error?.message ===
+        "Unable to fetch data. The request could not be resolved."
+    ) {
+      throw new Error("Email send failed");
+    } // Handle success case
   } catch (error) {
     console.error(error); // Handle error case
   }
@@ -298,17 +309,25 @@ export const sendPasswordResetEmail = async (email: string) => {
 
   const url = `${APP_ORIGIN}/password/reset?code=${verificationCode.id}&exp=${expiresAt.getTime()}`
 
-  const { data, error } = await sendMail({
-    to: user.email,
-    ...getPasswordResetTemplate(url)
-  })
+  // const { data, error } = await sendMail({
+  //   to: user.email,
+  //   ...getPasswordResetTemplate(url)
+  // })
 
-  appAssert(data?.id, INTERNAL_SERVER_ERROR, `${error?.name} - ${error?.message}`)
+  
+    const {data, error} = await sendMail({
+      to: user.email,
+      subject: "Reset your password",
+      text: "Reset your password",
+      react: React.createElement(ResetPassword, { url }), // Assuming VerifyEmail is a React component
+    });
+    console.log("Email sent successfully", data);
+    appAssert(data?.id, INTERNAL_SERVER_ERROR, `${error?.name} - ${error?.message}`)
+  
 
-  // return success
   return {
     url,
-    emailId: data.id
+    emailId: data?.id
   }
 }
 

@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { UserColumn } from "./UsersColumn";
 import { AlertModal } from "@/components/modals/alert-modal";
 
-import { deleteBillboard } from "@/lib/authApi";
+import { deleteUser } from "@/lib/authApi";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
@@ -36,14 +36,14 @@ const CellAction: React.FC<CellActionProps> = ({ data }) => {
     isError,
     isPending,
   } = useMutation({
-    mutationFn: deleteBillboard,
+    mutationFn: deleteUser,
     onError: () => {
-      toast.error("An error occurred while deleting the billboard");
+      toast.error("An error occurred while deleting the user");
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["billboards"] });
+      queryClient.invalidateQueries({ queryKey: ["users"] });
       setOpen(false);
-      toast.success("Billboard deleted successfully");
+      toast.success("User deleted successfully");
     },
   });
 

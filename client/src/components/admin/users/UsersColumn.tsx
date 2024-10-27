@@ -14,7 +14,7 @@ export type UserColumn = {
   phone_number: string;
   address: string;
   role: string;
-  image: string;
+  image_src: string;
   verified: string;
   createdAt: string;
 };
@@ -55,7 +55,7 @@ export const columns: ColumnDef<UserColumn>[] = [
     header: "Role",
   },
   {
-    accessorKey: "image",
+    accessorKey: "image_src",
     header: "Image",
   },
   {

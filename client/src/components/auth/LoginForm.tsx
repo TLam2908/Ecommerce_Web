@@ -15,8 +15,10 @@ import { FcGoogle } from "react-icons/fc";
 import { Input } from "@/components/ui/input";
 import { Button } from "../ui/button";
 import toast from "react-hot-toast";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
 import { LoginSchema } from "@/interface/auth";
+import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -38,21 +40,21 @@ const LoginForm = () => {
       toast.error(error.message);
     },
     onSuccess: (response) => {
-      console.log(response)
-      const loginReturnData = response.data
+      console.log(response);
+      const loginReturnData = response.data;
       if (loginReturnData) {
-        if (loginReturnData.role === 'admin') {
-          router.replace("/admin")
+        if (loginReturnData.role === "admin") {
+          router.replace("/admin");
           toast.success(loginReturnData.message);
-
         } else {
           router.replace(redirectUrl);
           toast.success(loginReturnData.message);
-
         }
       }
     },
   });
+
+  const [showPassword, setShowPassword] = useState(false);
 
   const form = useForm({
     resolver: zodResolver(LoginSchema),
@@ -104,12 +106,25 @@ const LoginForm = () => {
                     Password
                   </FormLabel>
                   <FormControl>
-                    <Input
-                      {...field}
-                      type="password"
-                      placeholder="Enter your password"
-                      className="focus:border focus:border-primary"
-                    />
+                    <div className="relative">
+                      <Input
+                        placeholder="Enter your password"
+                        className="focus:border border-black pr-10"
+                        type={showPassword ? "text" : "password"}
+                        {...field}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-600"
+                      >
+                        {showPassword ? (
+                          <FaRegEyeSlash size={20} />
+                        ) : (
+                          <FaRegEye size={20} />
+                        )}
+                      </button>
+                    </div>
                   </FormControl>
                   <FormMessage></FormMessage>
                 </FormItem>
