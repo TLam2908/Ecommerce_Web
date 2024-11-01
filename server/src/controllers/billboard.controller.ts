@@ -48,6 +48,7 @@ export const createBillboardHandler = catchErrors(async (req, res) => {
       image_id: uploadResponse.image_id,
     },
   });
+  appAssert(billboard, UNPROCESSABLE_CONTENT, "Billboard creation failed");
   return res.status(OK).json(billboard);
 });
 
@@ -83,6 +84,7 @@ export const updateBillboardHandler = catchErrors(async (req, res) => {
       image_id: updatedImage.image_id,
     },
   });
+  appAssert(updatedBillboard, UNPROCESSABLE_CONTENT, "Billboard update failed");
   return res.status(OK).json(updatedBillboard);
 });
 

@@ -13,6 +13,8 @@ import authRoutes from "./routes/auth.route";
 import userRoutes from "./routes/user.route";
 import sessionRoutes from "./routes/session.route";
 import billboardRoutes from "./routes/billboard.route";
+import manufacturerRoutes from "./routes/manufacturer.route";
+import categoryRoutes from "./routes/category.route";
 
 const app = express();
 
@@ -36,6 +38,9 @@ app.use("/auth", authRoutes)
 app.use("/users", authenticate, userRoutes);
 app.use("/sessions", authenticate, sessionRoutes);
 app.use("/billboards", authenticate, billboardRoutes);
+app.use("/manufacturers", authenticate, manufacturerRoutes);
+app.use("/categories", authenticate, categoryRoutes);
+
 
 app.use(errorHandler);
 

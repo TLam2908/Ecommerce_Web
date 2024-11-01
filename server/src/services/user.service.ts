@@ -152,7 +152,7 @@ export const updateUser = async (id: string, data: CreateUserParams) => {
 
   appAssert(user, NOT_FOUND, "User not found");
 
-  let uploadResponse = { image_src: "", image_id: "" };
+  let uploadResponse = { image_src: user.image_src, image_id: user.image_id };
   if (data.image_src && user.image_id) {
     uploadResponse = await updateImage({
       image_src: data.image_src,
