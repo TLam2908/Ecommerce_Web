@@ -2,6 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import appAssert from "../utils/appAssert";
 import catchErrors from "../utils/catchError";
 import { NOT_FOUND, OK, UNPROCESSABLE_CONTENT } from "../constants/http";
+import { categorySchema } from "../validation/category.validation";
 
 const prisma = new PrismaClient();
 
@@ -27,13 +28,13 @@ export const getCategoryByIdHandler = catchErrors(async (req, res) => {
 })
 
 export const createCategoryHandler = catchErrors(async (req, res) => {
-    const request = req.body 
+    const request = categorySchema.parse(req.body)
     const category = await prisma.category.create({
         data: {
             name: request.name,
             description: request.description,
             code: request.code,
-            billboard_id: request.billboard_id
+            billboard_id: parseInt(request.billboard_id)
         }
     })
     appAssert(category, UNPROCESSABLE_CONTENT ,"Category creation failed")
@@ -41,7 +42,7 @@ export const createCategoryHandler = catchErrors(async (req, res) => {
 })
 
 export const updateCategoryHandler = catchErrors(async (req, res) => {
-    const request = req.body
+    const request = categorySchema.parse(req.body)
     const { id } = req.params
 
     const updatedCategory = await prisma.category.update({
@@ -52,7 +53,7 @@ export const updateCategoryHandler = catchErrors(async (req, res) => {
             name: request.name,
             description: request.description,
             code: request.code,
-            billboard_id: request.billboard_id
+            billboard_id: parseInt(request.billboard_id)
         }
     })
     appAssert(updatedCategory, UNPROCESSABLE_CONTENT, "Category update failed")

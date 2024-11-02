@@ -66,3 +66,35 @@ export const updateBillboard = async (data: {
 }) => AUTH_API.put(`/billboards/${data.id}`, data);
 export const deleteBillboard = async (id: string) =>
   AUTH_API.delete(`/billboards/${id}`);
+
+// categories
+interface CategoryParam {
+  name: string,
+  description: string,
+  code: string,
+  billboard_id: string,
+}
+
+export const getCategories = async () => AUTH_API.get("/categories");
+export const getCategoryById = async (id: string) =>
+  AUTH_API.get(`/categories/${id}`);
+export const createCategory = async (data: CategoryParam) => AUTH_API.post("/categories", data);
+export const updateCategory = async (data: { id: string } & CategoryParam) =>
+  AUTH_API.put(`/categories/${data.id}`, data);
+export const deleteCategory = async (id: string) => AUTH_API.delete(`/categories/${id}`);
+
+// manufacturers
+interface ManufacturerParam {
+  name: string,
+  country: string,
+  type_of_product: string,
+  abbreviation: string,
+}
+
+export const getManufacturers = async () => AUTH_API.get("/manufacturers");
+export const getManufacturerById = async (id: string) =>
+  AUTH_API.get(`/manufacturers/${id}`);
+export const createManufacturer = async (data: ManufacturerParam) => AUTH_API.post("/manufacturers", data);
+export const updateManufacturer = async (data: { id: string } & ManufacturerParam) =>
+  AUTH_API.put(`/manufacturers/${data.id}`, data);
+export const deleteManufacturer = async (id: string) => AUTH_API.delete(`/manufacturers/${id}`);

@@ -50,7 +50,7 @@ const UsersClient = () => {
     <>
       <div className="flex items-center justify-between">
         <Heading
-          title={`User${formatedUsers.length === 1 ? '' : 's'} (${formatedUsers.length})`}
+          title={`User${formatedUsers.length <= 1 ? '' : 's'} (${formatedUsers.length})`}
           description="Manage user preferences"
         />
         <Button

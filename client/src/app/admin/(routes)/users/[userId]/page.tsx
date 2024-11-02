@@ -1,5 +1,5 @@
 import UserForm from "@/components/admin/users/UsersForm";
-const BillboardFormPage = () => {
+const UserFormPage = () => {
     return (
         <div>
            <UserForm />
@@ -7,4 +7,4 @@ const BillboardFormPage = () => {
     );
 }
 
-export default BillboardFormPage;
+export default UserFormPage;
