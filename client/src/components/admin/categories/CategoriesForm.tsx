@@ -107,15 +107,26 @@ const CategoriesForm = () => {
       name: "",
       description: "",
       code: "",
-      billboard_id: "",
+      billboard_title: "",
     },
   });
+
+  useEffect(() => {
+    if (categoryData?.data) {
+      form.reset({
+        name: categoryData?.data?.category?.name,
+        description: categoryData?.data?.category?.description,
+        code: categoryData?.data?.category?.code,
+        billboard_title: categoryData?.data?.billboard_title, 
+      });
+    }
+  }, [categoryData, form]);
 
   const onSubmit = (data: z.infer<typeof CategorySchema>) => {
     if (params.categoryId === "new") {
       add(data);
     } else {
-      update({ id: params.categoryId[0], ...data });
+      update({ ...data, id: params.categoryId[0] });
     }
   };
 
@@ -198,7 +209,7 @@ const CategoriesForm = () => {
                 />
                 <FormField
                   control={form.control}
-                  name="billboard_id"
+                  name="billboard_title"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Billboard</FormLabel>
@@ -206,6 +217,7 @@ const CategoriesForm = () => {
                         disabled={billboardPending}
                         onValueChange={(value) => {
                           field.onChange(value);
+                          console.log(field)
                         }}
                         value={field.value}
                         defaultValue={field.value}
@@ -219,16 +231,16 @@ const CategoriesForm = () => {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {billboardData?.data.map(
-                            (billboard: { id: string; title: string }) => (
+                          {
+                            billboardData?.data?.map((billboard: { id: string; title: string }) => (
                               <SelectItem
                                 key={billboard.id}
-                                value={billboard.id}
+                                value={billboard.title}
                               >
                                 {billboard.title}
                               </SelectItem>
-                            )
-                          )}
+                            ))
+                          }
                         </SelectContent>
                       </Select>
                       <FormMessage />

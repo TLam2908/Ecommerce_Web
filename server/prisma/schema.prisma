@@ -146,7 +146,7 @@ model Payment {
 
 model Billboard {
   id Int @id @default(autoincrement())
-  title String
+  title String @unique
   image_src String
   image_id String
   createdAt DateTime @default(now())

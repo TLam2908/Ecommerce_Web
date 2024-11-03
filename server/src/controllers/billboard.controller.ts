@@ -41,6 +41,14 @@ export const createBillboardHandler = catchErrors(async (req, res) => {
 
   appAssert(uploadResponse, UNPROCESSABLE_CONTENT, "Image upload failed");
 
+  const findBillboard = await prisma.billboard.findUnique({
+    where: {
+      title: request.title,
+    },
+  })
+
+  appAssert(!findBillboard, UNPROCESSABLE_CONTENT, "Billboard title already exists");
+
   const billboard = await prisma.billboard.create({
     data: {
       title: request.title,

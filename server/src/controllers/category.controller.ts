@@ -16,6 +16,15 @@ export const getCategoriesHandler = catchErrors(async (req, res) => {
 
 export const getCategoryByIdHandler = catchErrors(async (req, res) => {
     const { id } = req.params
+
+    const cate_billboard = await prisma.billboard.findUnique({
+        where: {
+            id: parseInt(id)
+        }
+    })
+
+    appAssert(cate_billboard, NOT_FOUND, "Category not found")
+
     const category = await prisma.category.findUnique({
         where: {
             id: parseInt(id)
@@ -23,18 +32,29 @@ export const getCategoryByIdHandler = catchErrors(async (req, res) => {
     })
     appAssert(category, NOT_FOUND, "Category not found")
     return res.status(OK).json({
-        data: category
+        data: {
+            category,
+            billboard_title: cate_billboard.title
+        }
     })
 })
 
 export const createCategoryHandler = catchErrors(async (req, res) => {
     const request = categorySchema.parse(req.body)
+
+    const findBillboard = await prisma.billboard.findUnique({
+        where: {
+            title: request.billboard_title
+        }
+    })
+    appAssert(findBillboard, NOT_FOUND, "Billboard not found")
+
     const category = await prisma.category.create({
         data: {
             name: request.name,
             description: request.description,
             code: request.code,
-            billboard_id: parseInt(request.billboard_id)
+            billboard_id: findBillboard.id
         }
     })
     appAssert(category, UNPROCESSABLE_CONTENT ,"Category creation failed")
@@ -45,6 +65,14 @@ export const updateCategoryHandler = catchErrors(async (req, res) => {
     const request = categorySchema.parse(req.body)
     const { id } = req.params
 
+    const findBillboard = await prisma.billboard.findUnique({
+        where: {
+            title: request.billboard_title
+        }
+    })
+
+    appAssert(findBillboard, NOT_FOUND, "Billboard not found")
+
     const updatedCategory = await prisma.category.update({
         where: {
             id: parseInt(id)
@@ -53,7 +81,7 @@ export const updateCategoryHandler = catchErrors(async (req, res) => {
             name: request.name,
             description: request.description,
             code: request.code,
-            billboard_id: parseInt(request.billboard_id)
+            billboard_id: findBillboard.id
         }
     })
     appAssert(updatedCategory, UNPROCESSABLE_CONTENT, "Category update failed")

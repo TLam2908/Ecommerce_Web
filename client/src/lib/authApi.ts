@@ -72,7 +72,7 @@ interface CategoryParam {
   name: string,
   description: string,
   code: string,
-  billboard_id: string,
+  billboard_title: string,
 }
 
 export const getCategories = async () => AUTH_API.get("/categories");

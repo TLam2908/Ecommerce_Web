@@ -69,7 +69,7 @@ const CellAction: React.FC<CellActionProps> = ({ data }) => {
             Copy ID
           </DropdownMenuItem>
           <DropdownMenuItem
-            onClick={() => router.push(`/admin/billboards/${data.id}`)}
+            onClick={() => router.push(`/admin/categories/${data.id}`)}
           >
             <Edit className="mr-1 h-4 w-4" />
             Update
