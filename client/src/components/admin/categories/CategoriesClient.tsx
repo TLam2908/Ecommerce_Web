@@ -4,7 +4,6 @@ import { Separator } from "@/components/ui/separator"
 import Heading from "@/components/ui/heading"
 import { Plus } from "lucide-react"
 
-import { format } from "date-fns"
 import { CategoriesColumn, columns } from "./CategoriesColumn"
 import { useRouter } from "next/navigation"
 import { useQuery } from "@tanstack/react-query"
