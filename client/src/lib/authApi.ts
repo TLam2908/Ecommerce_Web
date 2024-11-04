@@ -98,3 +98,21 @@ export const createManufacturer = async (data: ManufacturerParam) => AUTH_API.po
 export const updateManufacturer = async (data: { id: string } & ManufacturerParam) =>
   AUTH_API.put(`/manufacturers/${data.id}`, data);
 export const deleteManufacturer = async (id: string) => AUTH_API.delete(`/manufacturers/${id}`);
+
+
+// models
+
+interface ModelParam {
+  name: string,
+  make: string,
+  year: string,
+}
+
+export const getModels = async () => AUTH_API.get("/models");
+export const getModelById = async (id: string) =>
+  AUTH_API.get(`/models/${id}`);
+export const createModel = async (data: ModelParam) => AUTH_API.post("/models", data);
+export const updateModel = async (data: { id: string } & ModelParam) =>
+  AUTH_API.put(`/models/${data.id}`, data);
+export const deleteModel = async (id: string) => AUTH_API.delete(`/models/${id}`);
+

@@ -15,6 +15,7 @@ import sessionRoutes from "./routes/session.route";
 import billboardRoutes from "./routes/billboard.route";
 import manufacturerRoutes from "./routes/manufacturer.route";
 import categoryRoutes from "./routes/category.route";
+import modelRoutes from "./routes/model.route";
 
 const app = express();
 
@@ -40,6 +41,7 @@ app.use("/sessions", authenticate, sessionRoutes);
 app.use("/billboards", authenticate, billboardRoutes);
 app.use("/manufacturers", authenticate, manufacturerRoutes);
 app.use("/categories", authenticate, categoryRoutes);
+app.use("/models", authenticate, modelRoutes);
 
 
 app.use(errorHandler);

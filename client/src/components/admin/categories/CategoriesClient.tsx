@@ -30,7 +30,7 @@ const CategoriesClient = () => {
         <>
             <div className="flex items-center justify-between">
                 <Heading
-                    title={`Category${formatedCategories.length <= 1 ? '' : 's'} (${formatedCategories.length})`}
+                    title={`${formatedCategories.length <= 1 ? 'Category' : 'Categories'} (${formatedCategories.length})`}
                     description="Manage category preferences"
                 />
                 <Button

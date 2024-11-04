@@ -125,7 +125,7 @@ const ManufacturersForm = () => {
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-xl font-semibold">
+                      <FormLabel className="text-lg font-semibold">
                         Name
                       </FormLabel>
                       <FormControl>
@@ -144,7 +144,7 @@ const ManufacturersForm = () => {
                   name="country"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-xl font-semibold">
+                      <FormLabel className="text-lg font-semibold">
                         Country
                       </FormLabel>
                       <FormControl>
@@ -165,7 +165,7 @@ const ManufacturersForm = () => {
                   name="type_of_product"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-xl font-semibold">
+                      <FormLabel className="text-lg font-semibold">
                         Type of Product
                       </FormLabel>
                       <FormControl>
@@ -184,7 +184,7 @@ const ManufacturersForm = () => {
                   name="abbreviation"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-xl font-semibold">
+                      <FormLabel className="text-lg font-semibold">
                         Abbreviation
                       </FormLabel>
                       <FormControl>

@@ -31,26 +31,34 @@ model Category {
   billboard_id Int
   
   Autopart Autopart[]
-  billboard Billboard @relation(fields: [billboard_id], references: [id])
+  Billboard Billboard @relation(fields: [billboard_id], references: [id])
 
+}
+
+model Images {
+  id Int @id @default(autoincrement())
+  src String
+  cloudinary_id String
+  autopart_id Int
+
+  Autopart Autopart @relation(fields: [autopart_id], references: [id])
 }
 
 model Autopart {
   id Int @id @default(autoincrement())
   name String
   description String?
+  oem_number String
   price Int
   manufacturer_id Int
   category_id Int
-  image_src String
-  image_id String
 
   Autopart_Model Autopart_Model[]
   
-  manufacturer Manufacturer @relation(fields: [manufacturer_id], references: [id])
-  category Category @relation(fields: [category_id], references: [id])
+  Manufacturer Manufacturer @relation(fields: [manufacturer_id], references: [id])
+  Category Category @relation(fields: [category_id], references: [id])
 
-
+  Images Images[]
   CartItem CartItem[]
 }
 
@@ -152,5 +160,5 @@ model Billboard {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  category Category[]
+  Category Category[]
 }

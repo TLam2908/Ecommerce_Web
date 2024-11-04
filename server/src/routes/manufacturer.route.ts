@@ -1,4 +1,4 @@
-import e, { Router } from "express";
+import { Router } from "express";
 import { createManufacturerHandler } from "../controllers/manufacturer.controller";
 import { deleteManufacturerHandler } from "../controllers/manufacturer.controller";
 import { getManufacturerByIdHandler } from "../controllers/manufacturer.controller";

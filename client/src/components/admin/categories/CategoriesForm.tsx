@@ -64,12 +64,13 @@ const CategoriesForm = () => {
     enabled: params.categoryId !== "new",
   });
 
+  console.log(categoryData)
+
   const { data: billboardData, isPending: billboardPending } = useQuery({
     queryKey: ["billboards"],
     queryFn: () => getBillboards(),
   });
 
-  console.log(billboardData);
 
   const {
     mutate: add,
@@ -117,7 +118,7 @@ const CategoriesForm = () => {
         name: categoryData?.data?.category?.name,
         description: categoryData?.data?.category?.description,
         code: categoryData?.data?.category?.code,
-        billboard_title: categoryData?.data?.billboard_title, 
+        billboard_title: categoryData?.data?.category?.Billboard?.title, 
       });
     }
   }, [categoryData, form]);
@@ -126,6 +127,7 @@ const CategoriesForm = () => {
     if (params.categoryId === "new") {
       add(data);
     } else {
+      console.log(data);
       update({ ...data, id: params.categoryId[0] });
     }
   };
@@ -149,7 +151,7 @@ const CategoriesForm = () => {
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-xl font-semibold">
+                      <FormLabel className="text-lg font-semibold">
                         Name
                       </FormLabel>
                       <FormControl>
@@ -170,7 +172,7 @@ const CategoriesForm = () => {
                   name="description"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-xl font-semibold">
+                      <FormLabel className="text-lg font-semibold">
                         Description
                       </FormLabel>
                       <FormControl>
@@ -192,7 +194,7 @@ const CategoriesForm = () => {
                   name="code"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-xl font-semibold">
+                      <FormLabel className="text-lg font-semibold">
                         Code
                       </FormLabel>
                       <FormControl>
@@ -212,7 +214,7 @@ const CategoriesForm = () => {
                   name="billboard_title"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Billboard</FormLabel>
+                      <FormLabel className="text-lg font-semibold">Billboard</FormLabel>
                       <Select
                         disabled={billboardPending}
                         onValueChange={(value) => {

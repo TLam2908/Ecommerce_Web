@@ -152,7 +152,7 @@ const UserForm = () => {
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-xl font-semibold">
+                      <FormLabel className="text-lg font-semibold">
                         Name
                       </FormLabel>
                       <FormControl>
@@ -171,7 +171,7 @@ const UserForm = () => {
                   name="phone_number"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-xl font-semibold">
+                      <FormLabel className="text-lg font-semibold">
                         Phone number (Optional)
                       </FormLabel>
                       <FormControl>
@@ -191,7 +191,7 @@ const UserForm = () => {
                     name="password"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-xl font-semibold">
+                        <FormLabel className="text-lg font-semibold">
                           Password
                         </FormLabel>
                         <FormControl>
@@ -227,7 +227,7 @@ const UserForm = () => {
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-xl font-semibold">
+                      <FormLabel className="text-lg font-semibold">
                         Email
                       </FormLabel>
                       <FormControl>
@@ -246,7 +246,7 @@ const UserForm = () => {
                   name="address"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-xl font-semibold">
+                      <FormLabel className="text-lg font-semibold">
                         Address (Optional)
                       </FormLabel>
                       <FormControl>
@@ -266,7 +266,7 @@ const UserForm = () => {
                     name="confirmPassword"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-xl font-semibold">
+                        <FormLabel className="text-lg font-semibold">
                           Confirm password
                         </FormLabel>
                         <FormControl>
@@ -305,7 +305,7 @@ const UserForm = () => {
                 name="image_src"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-xl font-semibold">
+                    <FormLabel className="text-lg font-semibold">
                       Image
                     </FormLabel>
                     <FormControl>

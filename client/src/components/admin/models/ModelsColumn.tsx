@@ -3,17 +3,16 @@
 import { ColumnDef } from "@tanstack/react-table"
 import { Button } from "@/components/ui/button"
 import { ArrowUpDown } from "lucide-react"
-import CellAction from "@/components/admin/manufacturers/ManufacturersAction"
 
-export type ManufacturersColumn = {
+import CellAction from "@/components/admin/models/ModelsAction"
+export type ModelsColumn = {
     id: string,
     name: string,
-    country: string,
-    type_of_product: string,
-    abbreviation: string,
+    make: string,
+    year: string,
 }
 
-export const columns: ColumnDef<ManufacturersColumn>[] = [
+export const columns: ColumnDef<ModelsColumn>[] = [
     {
         accessorKey: "id",
         header: ({ column }) => {
@@ -33,16 +32,12 @@ export const columns: ColumnDef<ManufacturersColumn>[] = [
         header: 'Name',
     },
     {
-        accessorKey: 'country',
-        header: 'Country',
+        accessorKey: 'make',
+        header: 'Make',
     },
     {
-        accessorKey: 'type_of_product',
-        header: 'Type of Product',
-    },
-    {
-        accessorKey: 'abbreviation',
-        header: 'Abbreviation',
+        accessorKey: 'year',
+        header: 'Year',
     },
     {
         id: "Action",

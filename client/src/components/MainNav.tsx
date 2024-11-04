@@ -38,6 +38,11 @@ const MainNav = ({
       active: pathName === "/admin/manufacturers",
     },
     {
+      href: '/admin/models',
+      label: 'Models',
+      active: pathName === '/admin/models'
+    },
+    {
       href: "/admin/products",
       label: "Products",
       active: pathName === "/admin/products",
