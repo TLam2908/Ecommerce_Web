@@ -18,10 +18,12 @@ const BillboardsClient = () => {
     queryFn: () => getBillboards(),
   });
 
-  const formatedBillboards: BillboardColumn[] = data?.data?.map((billboard: { id: string; title: string; createdAt: string }) => ({
+  const formatedBillboards: BillboardColumn[] = data?.data?.map((billboard: { id: string; title: string; createdAt: string; image_src: string }) => ({
     id: billboard.id,
     title: billboard.title,
     createdAt: format(new Date(billboard.createdAt), "MMMM dd, yyyy"),
+    image_src: billboard.image_src,
+
   })) || []
 
   console.log(data);

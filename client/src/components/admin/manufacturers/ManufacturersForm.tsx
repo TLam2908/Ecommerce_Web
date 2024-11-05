@@ -62,8 +62,8 @@ const ManufacturersForm = () => {
   } = useMutation({
     mutationFn: createManufacturer,
     onSuccess: () => {
+      router.replace("/admin/manufacturers");
       toast.success(toastMessage);
-      router.push("/admin/manufacturers");
     },
   });
 
@@ -74,8 +74,8 @@ const ManufacturersForm = () => {
   } = useMutation({
     mutationFn: updateManufacturer,
     onSuccess: () => {
+      router.replace("/admin/manufacturers");
       toast.success(toastMessage);
-      router.push("/admin/manufacturers");
     },
   });
 

@@ -3,7 +3,7 @@ import { twMerge } from "tailwind-merge";
 const services = [
   {
     id: 1,
-    title: "Products & Search System",
+    title: "Products & Integration Search System",
     buttonText: "Sign up now",
     inverse: false,
     features: [

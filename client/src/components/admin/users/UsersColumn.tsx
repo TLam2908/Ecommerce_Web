@@ -1,5 +1,5 @@
 "use client";
-
+import Image from "next/image";
 import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { ArrowUpDown } from "lucide-react";
@@ -57,6 +57,21 @@ export const columns: ColumnDef<UserColumn>[] = [
   {
     accessorKey: "image_src",
     header: "Image",
+    cell: ({ row }) => {
+      return row.original.image_src ? (
+        <Image
+          src={row.original.image_src}
+          alt={row.original.name || "No name"}
+          height={50}
+          width={50}
+          className="rounded-full"
+        />
+      ) : (
+        <div className="flex items-center justify-center h-[50px] w-[50px]">
+          <span className="text-gray-500">No Image</span>
+        </div>
+      );
+    },
   },
   {
     accessorKey: "verified",

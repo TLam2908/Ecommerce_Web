@@ -60,8 +60,8 @@ const ModelsForm = () => {
       toast.error("An error occurred while creating the model");
     },
     onSuccess: () => {
+      router.replace("/admin/models");
       toast.success(toastMessage);
-      router.push("/admin/models");
     },
   });
 
@@ -75,8 +75,8 @@ const ModelsForm = () => {
       toast.error("An error occurred while updating the model");
     },
     onSuccess: () => {
+      router.replace("/admin/models");
       toast.success(toastMessage);
-      router.push("/admin/models");
     },
   });
 
