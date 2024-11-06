@@ -31,7 +31,6 @@ export const uploadImage = async ({
 export const deleteImage = async (image_id: string) => {
   return await cloudinary.uploader.destroy(image_id, {
     resource_type: "image",
-    type: "upload",
     timeout: 100000,
   });
 };

@@ -38,6 +38,7 @@ import toast from "react-hot-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ProductSchema } from "@/interface/product";
 import { ImSpinner8 } from "react-icons/im";
+import { set } from "date-fns";
 
 const ProductForm = () => {
   const params = useParams();
@@ -67,6 +68,8 @@ const ProductForm = () => {
     queryFn: () => getAutopartById(params.productId[0]),
     enabled: params.productId !== "new",
   });
+
+  console.log(data);
 
   const { data: categoryData, isPending: categoryPending } = useQuery({
     queryKey: ["categories"],
@@ -139,12 +142,14 @@ const ProductForm = () => {
       form.reset({
         name: data?.data.name,
         description: data?.data.description,
-        price: data?.data.price,
+        price: data?.data.price.toString(),
         oem_number: data?.data.oem_number,
-        category_name: data?.data.category,
-        manufacturer_name: data?.data.manufacturer,
+        category_name: data?.data.Category.name,
+        manufacturer_name: data?.data.Manufacturer.name,
+        model_id: data?.data.Autopart_Model.map(
+          (model: { Model: { id: string } }) => model.Model.id
+        ),
       });
-      setModel(data?.data.model);
       setImageSrc(data?.data.images);
     }
   }, [data, form]);
@@ -165,7 +170,8 @@ const ProductForm = () => {
     if (params.productId === "new") {
       add(data);
     } else {
-      update({ ...data, id: params.productId[0] });
+      // update({ ...data, id: params.productId[0] });
+      console.log(data);
     }
   };
 
@@ -340,28 +346,40 @@ const ProductForm = () => {
                   )}
                 />
                 {formatModel && (
-                  <div className="max-w-xl">
-                    <h1 className="text-lg font-semibold mb-2">Models</h1>
-                    <MultiSelect
-                      options={formatModel}
-                      onValueChange={(value) => {
-                        setModel(value);
-                        form.setValue("model_id", value);
-                      }}
-                      defaultValue={model}
-                      placeholder="Select models"
-                      variant="inverted"
-                      animation={2}
-                      maxCount={5}
-                    />
-                  </div>
+                  <FormField
+                    control={form.control}
+                    name="model_id"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-lg font-semibold">
+                          Models
+                        </FormLabel>
+                        <MultiSelect
+                          options={formatModel}
+                          defaultValue={field.value}
+                          onValueChange={(value) => {
+                            field.onChange(value);
+                            console.log(field.value);
+                          }}
+                          placeholder="Select models"
+                          variant="inverted"
+                          animation={2}
+                          maxCount={5}
+                        />
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                 )}
               </div>
             </div>
             <div className="w-[500px]">
-              <MultiUpload
-                value={imageSrc}
-                onChange={handleImageChange}
+              <FormField
+                control={form.control}
+                name="images"
+                render={({ field }) => (
+                  <MultiUpload value={field.value} onChange={field.onChange} />
+                )}
               />
             </div>
             <Button

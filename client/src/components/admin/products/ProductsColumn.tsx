@@ -5,6 +5,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { ArrowUpDown } from "lucide-react";
 import CellAction from "./ProductsAction";
+import Slider from "react-slick";
 
 export type ProductColumn = {
   id: string;
@@ -69,7 +70,7 @@ export const columns: ColumnDef<ProductColumn>[] = [
   },
   {
     accessorKey: "model",
-    header: "Model",
+    header: "Models",
     cell: ({ row }) => {
       return (
         <div className="flex flex-col">
@@ -84,23 +85,36 @@ export const columns: ColumnDef<ProductColumn>[] = [
     accessorKey: "images",
     header: "Images",
     cell: ({ row }) => {
+      const settings = {
+        dots: true,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+      };
       return (
-        <div className="flex items-center">
-          {row.original.images?.map((image, index) => (
-            <div key={index} className="w-10 h-10 relative mr-2">
-              <Image
-                src={image}
-                alt="Product Image"
-                layout="fill"
-                objectFit="cover"
-              />
-            </div>
-          ))}
+        <div className="w-[220px] h-[180px]">
+          {/* Điều chỉnh kích thước nếu cần */}
+          <Slider {...settings}>
+            {row.original.images?.map((image, index) => (
+              <div key={index} className="relative w-full h-full border border-black">
+                <Image
+                  src={image}
+                  alt="Product Image"
+                  width={200}
+                  height={200}
+                  objectFit="cover"
+                  className="rounded-lg"
+                />
+              </div>
+            ))}
+          </Slider>
         </div>
       );
     },
   },
-  {
+  { 
+    header: "Action",
     id: "Action",
     cell: ({ row }) => <CellAction data={row.original} />,
   },

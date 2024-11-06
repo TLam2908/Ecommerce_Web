@@ -20,8 +20,8 @@ interface ProductsClientProps {
     oem_number: string;
     Category: Category;
     Manufacturer: Manufacturer;
+    Images: Image[];
     model: string[];
-    images: string[];
     Autopart_Model: AutopartModel[]
 }
 
@@ -37,6 +37,10 @@ interface AutopartModel {
     Model: {
         name: string;
     };
+}
+
+interface Image {
+    src: string
 }
 
 const ProductsClient = () => {
@@ -57,7 +61,7 @@ const ProductsClient = () => {
         category: product.Category.name,
         manufacturer: product.Manufacturer.name,
         models: product.Autopart_Model.map((model) => model.Model.name),
-        images: product.images,
+        images: product.Images.map((image: Image) => image.src),
     })) || []
 
     return (

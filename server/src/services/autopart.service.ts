@@ -17,63 +17,75 @@ export type CreateAutopartParams = {
 };
 
 export const createAutopart = async (data: CreateAutopartParams) => {
-  const category = await prisma.category.findUnique({
-    where: {
-      name: data.category_name,
-    },
-  });
-  appAssert(category, INTERNAL_SERVER_ERROR, "Category not found");
-
-  const manufacturer = await prisma.manufacturer.findUnique({
-    where: {
-      name: data.manufacturer_name,
-    },
-  });
-  appAssert(manufacturer, INTERNAL_SERVER_ERROR, "Manufacturer not found");
-
-  const autopart = await prisma.autopart.create({
-    data: {
-      name: data.name,
-      description: data.description,
-      oem_number: data.oem_number,
-      price: parseInt(data.price),
-      category_id: category.id,
-      manufacturer_id: manufacturer.id,
-    },
-  });
-  appAssert(autopart, INTERNAL_SERVER_ERROR, "Autopart creation failed");
-  const autopartModel = await prisma.autopart_Model.createMany({
-    data: data.model_id.map((modelId) => ({
-      autopart_id: autopart.id,
-      model_id: parseInt(modelId),
-    })),
-  });
-  appAssert(
-    autopartModel,
-    INTERNAL_SERVER_ERROR,
-    "Autopart model creation failed"
-  );
-  await Promise.all(
+  // Step 1: Upload images first and collect responses
+  const uploadedImages = await Promise.all(
     data.images.map(async (image) => {
       const uploadResponse = await uploadImage({
         image_src: image,
         uploadPreset: "ImageUploads",
       });
       appAssert(uploadResponse, INTERNAL_SERVER_ERROR, "Image upload failed");
-
-      const autopartImage = await prisma.images.create({
-        data: {
-          src: uploadResponse.image_src,
-          cloudinary_id: uploadResponse.image_id,
-          autopart_id: autopart.id,
-        },
-      });
-      appAssert(autopartImage, INTERNAL_SERVER_ERROR, "Image creation failed");
+      return {
+        src: uploadResponse.image_src,
+        cloudinary_id: uploadResponse.image_id,
+      };
     })
   );
 
-  return autopart;
+  // Step 2: Begin transaction for database operations
+  return await prisma.$transaction(async (prisma) => {
+    const category = await prisma.category.findUnique({
+      where: {
+        name: data.category_name,
+      },
+    });
+    appAssert(category, INTERNAL_SERVER_ERROR, "Category not found");
+
+    const manufacturer = await prisma.manufacturer.findUnique({
+      where: {
+        name: data.manufacturer_name,
+      },
+    });
+    appAssert(manufacturer, INTERNAL_SERVER_ERROR, "Manufacturer not found");
+
+    const autopart = await prisma.autopart.create({
+      data: {
+        name: data.name,
+        description: data.description,
+        oem_number: data.oem_number,
+        price: parseInt(data.price),
+        category_id: category.id,
+        manufacturer_id: manufacturer.id,
+      },
+    });
+    appAssert(autopart, INTERNAL_SERVER_ERROR, "Autopart creation failed");
+
+    const autopartModel = await prisma.autopart_Model.createMany({
+      data: data.model_id.map((modelId) => ({
+        autopart_id: autopart.id,
+        model_id: parseInt(modelId),
+      })),
+    });
+    appAssert(autopartModel, INTERNAL_SERVER_ERROR, "Autopart model creation failed");
+
+    await Promise.all(
+      uploadedImages.map(async (image) => {
+        const autopartImage = await prisma.images.create({
+          data: {
+            src: image.src,
+            cloudinary_id: image.cloudinary_id,
+            autopart_id: autopart.id,
+          },
+        });
+        appAssert(autopartImage, INTERNAL_SERVER_ERROR, "Image creation failed");
+      })
+    );
+
+    return autopart;
+  });
 };
+
+
 
 export const getAutoparts = async () => {
   const autoparts = await prisma.autopart.findMany({
@@ -99,6 +111,8 @@ export const getAutopartById = async (id: string) => {
     },
     include: {
       Images: true,
+      Category: true,
+      Manufacturer: true,
       Autopart_Model: {
         include: {
           Model: true,
@@ -153,24 +167,27 @@ export const updateAutopart = async (
   });
   appAssert(updateAutopart, INTERNAL_SERVER_ERROR, "Autopart update failed");
   // update images
-  const autopartImages = data.images.map(async (image, index) => {
-    const uploadResponse = await updateImage({
-      image_src: image,
-      image_id: autopart.Images[index].cloudinary_id,
-      uploadPreset: "ImageUploads",
-    });
-    appAssert(uploadResponse, INTERNAL_SERVER_ERROR, "Image upload failed");
-    const autopartImage = await prisma.images.update({
-      where: {
-        id: autopart.Images[index].id,
-      },
-      data: {
-        src: uploadResponse.image_src,
-        cloudinary_id: uploadResponse.image_id,
-      },
-    });
-    appAssert(autopartImage, INTERNAL_SERVER_ERROR, "Image creation failed");
-  });
+  await Promise.all(
+    data.images.map(async (image, index) => {
+      const uploadResponse = await updateImage({
+        image_src: image,
+        image_id: autopart.Images[index]?.cloudinary_id,
+        uploadPreset: "ImageUploads",
+      });
+      appAssert(uploadResponse, INTERNAL_SERVER_ERROR, "Image upload failed");
+
+      const autopartImage = await prisma.images.update({
+        where: {
+          id: autopart.Images[index]?.id,
+        },
+        data: {
+          src: uploadResponse.image_src,
+          cloudinary_id: uploadResponse.image_id,
+        },
+      });
+      appAssert(autopartImage, INTERNAL_SERVER_ERROR, "Image update failed");
+    })
+  );
 
   // update model
   await prisma.autopart_Model.deleteMany({
@@ -206,14 +223,16 @@ export const deleteAutopart = async (id: string) => {
 
   appAssert(autopart, INTERNAL_SERVER_ERROR, "Autopart not found");
 
-  const deleteImages = autopart.Images.map(async (image) => {
-    const deleteImageResponse = await deleteImage(image.cloudinary_id);
-    appAssert(
-      deleteImageResponse,
-      INTERNAL_SERVER_ERROR,
-      "Image deletion failed"
-    );
-  });
+  await Promise.all(
+    autopart.Images.map(async (image) => {
+      const deleteImageResponse = await deleteImage(image.cloudinary_id);
+      appAssert(
+        deleteImageResponse,
+        INTERNAL_SERVER_ERROR,
+        "Image deletion failed"
+      );
+    })
+  );
 
   const deleteAutopartImages = await prisma.images.deleteMany({
     where: {
