@@ -18,10 +18,25 @@ interface ProductsClientProps {
     description: string;
     price: string;
     oem_number: string;
-    category: string;
-    manufacturer: string;
+    Category: Category;
+    Manufacturer: Manufacturer;
     model: string[];
     images: string[];
+    Autopart_Model: AutopartModel[]
+}
+
+interface Category {
+    name: string;
+}
+
+interface Manufacturer {
+    name: string;
+}
+
+interface AutopartModel {
+    Model: {
+        name: string;
+    };
 }
 
 const ProductsClient = () => {
@@ -39,9 +54,9 @@ const ProductsClient = () => {
         description: product.description,
         price: product.price,
         oem_number: product.oem_number,
-        category: product.category,
-        manufacturer: product.manufacturer,
-        model: product.model,
+        category: product.Category.name,
+        manufacturer: product.Manufacturer.name,
+        models: product.Autopart_Model.map((model) => model.Model.name),
         images: product.images,
     })) || []
 

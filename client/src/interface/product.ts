@@ -13,13 +13,13 @@ export const ProductSchema = z.object({
     oem_number: z.string().min(1, {
         message: 'OEM Number must be filled'
     }),
-    category: z.string({
+    category_name: z.string({
         message: 'Category must be filled'
     }),
-    manufacturer: z.string({
+    manufacturer_name: z.string({
         message: 'Manufacturer must be filled'
     }),
-    models: z.array(z.string(), {
+    model_id: z.array(z.string(), {
         message: 'Model must be filled'
     }),
     images: z.array(z.string(), {

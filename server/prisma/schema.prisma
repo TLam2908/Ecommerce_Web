@@ -15,7 +15,7 @@ datasource db {
 
 model Manufacturer {
   id Int @id @default(autoincrement())
-  name String
+  name String @unique
   country String
   type_of_product String
   abbreviation String?
@@ -25,7 +25,7 @@ model Manufacturer {
 
 model Category {
   id Int @id @default(autoincrement())
-  name String
+  name String @unique
   description String?
   code String
   billboard_id Int

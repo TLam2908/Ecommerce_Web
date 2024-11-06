@@ -14,7 +14,7 @@ export type ProductColumn = {
   oem_number: string;
   category: string;
   manufacturer: string;
-  model: string[];
+  models: string[];
   images: string[];
 };
 
@@ -73,7 +73,7 @@ export const columns: ColumnDef<ProductColumn>[] = [
     cell: ({ row }) => {
       return (
         <div className="flex flex-col">
-          {row.original.model.map((m, index) => (
+          {row.original.models?.map((m, index) => (
             <span key={index}>{m}</span>
           ))}
         </div>
@@ -86,7 +86,7 @@ export const columns: ColumnDef<ProductColumn>[] = [
     cell: ({ row }) => {
       return (
         <div className="flex items-center">
-          {row.original.images.map((image, index) => (
+          {row.original.images?.map((image, index) => (
             <div key={index} className="w-10 h-10 relative mr-2">
               <Image
                 src={image}

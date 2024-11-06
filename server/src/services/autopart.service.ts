@@ -10,21 +10,35 @@ export type CreateAutopartParams = {
   description: string;
   price: string;
   oem_number: string;
-  category_id: string;
-  manufacturer_id: string;
+  category_name: string;
+  manufacturer_name: string;
   model_id: string[];
   images: string[];
 };
 
 export const createAutopart = async (data: CreateAutopartParams) => {
+  const category = await prisma.category.findUnique({
+    where: {
+      name: data.category_name,
+    },
+  });
+  appAssert(category, INTERNAL_SERVER_ERROR, "Category not found");
+
+  const manufacturer = await prisma.manufacturer.findUnique({
+    where: {
+      name: data.manufacturer_name,
+    },
+  });
+  appAssert(manufacturer, INTERNAL_SERVER_ERROR, "Manufacturer not found");
+
   const autopart = await prisma.autopart.create({
     data: {
       name: data.name,
       description: data.description,
       oem_number: data.oem_number,
       price: parseInt(data.price),
-      category_id: parseInt(data.category_id),
-      manufacturer_id: parseInt(data.manufacturer_id),
+      category_id: category.id,
+      manufacturer_id: manufacturer.id,
     },
   });
   appAssert(autopart, INTERNAL_SERVER_ERROR, "Autopart creation failed");
@@ -39,22 +53,24 @@ export const createAutopart = async (data: CreateAutopartParams) => {
     INTERNAL_SERVER_ERROR,
     "Autopart model creation failed"
   );
-  const autopartImages = data.images.map(async (image) => {
-    const uploadResponse = await uploadImage({
-      image_src: image,
-      uploadPreset: "ImageUploads",
-    });
-    appAssert(uploadResponse, INTERNAL_SERVER_ERROR, "Image upload failed");
+  await Promise.all(
+    data.images.map(async (image) => {
+      const uploadResponse = await uploadImage({
+        image_src: image,
+        uploadPreset: "ImageUploads",
+      });
+      appAssert(uploadResponse, INTERNAL_SERVER_ERROR, "Image upload failed");
 
-    const autopartImage = await prisma.images.create({
-      data: {
-        src: uploadResponse.image_src,
-        cloudinary_id: uploadResponse.image_id,
-        autopart_id: autopart.id,
-      },
-    });
-    appAssert(autopartImage, INTERNAL_SERVER_ERROR, "Image creation failed");
-  });
+      const autopartImage = await prisma.images.create({
+        data: {
+          src: uploadResponse.image_src,
+          cloudinary_id: uploadResponse.image_id,
+          autopart_id: autopart.id,
+        },
+      });
+      appAssert(autopartImage, INTERNAL_SERVER_ERROR, "Image creation failed");
+    })
+  );
 
   return autopart;
 };
@@ -108,6 +124,20 @@ export const updateAutopart = async (
   });
   appAssert(autopart, INTERNAL_SERVER_ERROR, "Autopart not found");
 
+  const category = await prisma.category.findUnique({
+    where: {
+      name: data.category_name,
+    },
+  });
+  appAssert(category, INTERNAL_SERVER_ERROR, "Category not found");
+
+  const manufacturer = await prisma.manufacturer.findUnique({
+    where: {
+      name: data.manufacturer_name,
+    },
+  });
+  appAssert(manufacturer, INTERNAL_SERVER_ERROR, "Manufacturer not found");
+
   const updateAutopart = await prisma.autopart.update({
     where: {
       id: parseInt(id),
@@ -117,8 +147,8 @@ export const updateAutopart = async (
       description: data.description,
       price: parseInt(data.price),
       oem_number: data.oem_number,
-      category_id: parseInt(data.category_id),
-      manufacturer_id: parseInt(data.manufacturer_id),
+      category_id: category.id,
+      manufacturer_id: manufacturer.id,
     },
   });
   appAssert(updateAutopart, INTERNAL_SERVER_ERROR, "Autopart update failed");

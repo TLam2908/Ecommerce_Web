@@ -127,9 +127,9 @@ const ProductForm = () => {
       description: "",
       price: "",
       oem_number: "",
-      category: "",
-      manufacturer: "",
-      models: [],
+      category_name: "",
+      manufacturer_name: "",
+      model_id: [],
       images: [],
     },
   });
@@ -141,8 +141,8 @@ const ProductForm = () => {
         description: data?.data.description,
         price: data?.data.price,
         oem_number: data?.data.oem_number,
-        category: data?.data.category,
-        manufacturer: data?.data.manufacturer,
+        category_name: data?.data.category,
+        manufacturer_name: data?.data.manufacturer,
       });
       setModel(data?.data.model);
       setImageSrc(data?.data.images);
@@ -162,6 +162,11 @@ const ProductForm = () => {
 
   const onSubmit = (data: z.infer<typeof ProductSchema>) => {
     console.log(data);
+    if (params.productId === "new") {
+      add(data);
+    } else {
+      update({ ...data, id: params.productId[0] });
+    }
   };
 
   return (
@@ -258,7 +263,7 @@ const ProductForm = () => {
               <div className="flex flex-col gap-5 w-[500px]">
                 <FormField
                   control={form.control}
-                  name="category"
+                  name="category_name"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="text-lg font-semibold">
@@ -297,7 +302,7 @@ const ProductForm = () => {
                 />
                 <FormField
                   control={form.control}
-                  name="manufacturer"
+                  name="manufacturer_name"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="text-lg font-semibold">
@@ -341,7 +346,7 @@ const ProductForm = () => {
                       options={formatModel}
                       onValueChange={(value) => {
                         setModel(value);
-                        form.setValue("models", value);
+                        form.setValue("model_id", value);
                       }}
                       defaultValue={model}
                       placeholder="Select models"

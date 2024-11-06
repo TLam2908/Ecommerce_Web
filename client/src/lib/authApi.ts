@@ -127,8 +127,8 @@ interface AutopartParam {
   description: string;
   price: string;
   oem_number: string;
-  category_id: string;
-  manufacturer_id: string;
+  category_name: string;
+  manufacturer_name: string;
   model_id: string[];
   images: string[];
 }
