@@ -49,10 +49,12 @@ const ManufacturersForm = () => {
     action = "Save changes";
   }
 
+  const manufacturerId = Array.isArray(params.manufacturerId) ? params.manufacturerId[0] : params.manufacturerId;
+
   const { data, isPending } = useQuery({
-    queryKey: ["manufacturers", params.manufacturerId],
-    queryFn: () => getManufacturerById(params.manufacturerId[0]),
-    enabled: params.manufacturerId !== "new",
+    queryKey: ["manufacturers", manufacturerId],
+    queryFn: () => getManufacturerById(manufacturerId),
+    enabled: manufacturerId !== "new",
   });
 
   const {
@@ -101,10 +103,10 @@ const ManufacturersForm = () => {
   }, [data, form]);
 
   const onsubmit = (data: z.infer<typeof ManufacturerSchema>) => {
-    if (params.manufacturerId === "new") {
+    if (manufacturerId === "new") {
       add(data);
     } else {
-      update({ id: params.manufacturerId[0], ...data });
+      update({ id: manufacturerId, ...data });
     }   
   };
 

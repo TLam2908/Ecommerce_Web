@@ -63,10 +63,13 @@ const ProductForm = () => {
     toastMessage = "Product created successfully";
     action = "Create";
   }
+
+  const productId = Array.isArray(params.productId) ? params.productId[0] : params.productId;
+
   const { data, isPending } = useQuery({
-    queryKey: ["products", params.productId],
-    queryFn: () => getAutopartById(params.productId[0]),
-    enabled: params.productId !== "new",
+    queryKey: ["products", productId],
+    queryFn: () => getAutopartById(productId),
+    enabled: productId !== "new",
   });
 
   console.log(data);
@@ -147,10 +150,11 @@ const ProductForm = () => {
         category_name: data?.data.Category.name,
         manufacturer_name: data?.data.Manufacturer.name,
         model_id: data?.data.Autopart_Model.map(
-          (model: { Model: { id: string } }) => model.Model.id
+          (model: { Model: { id: number } }) => model.Model.id.toString()
         ),
+        images: data?.data.Images.map((image: { src: string }) => image.src),
       });
-      setImageSrc(data?.data.images);
+      // setImageSrc(data?.data.images);
     }
   }, [data, form]);
 
@@ -167,10 +171,10 @@ const ProductForm = () => {
 
   const onSubmit = (data: z.infer<typeof ProductSchema>) => {
     console.log(data);
-    if (params.productId === "new") {
+    if (productId === "new") {
       add(data);
     } else {
-      // update({ ...data, id: params.productId[0] });
+      update({ ...data, id: productId });
       console.log(data);
     }
   };
@@ -356,7 +360,7 @@ const ProductForm = () => {
                         </FormLabel>
                         <MultiSelect
                           options={formatModel}
-                          defaultValue={field.value}
+                          value={field.value}
                           onValueChange={(value) => {
                             field.onChange(value);
                             console.log(field.value);
@@ -378,7 +382,7 @@ const ProductForm = () => {
                 control={form.control}
                 name="images"
                 render={({ field }) => (
-                  <MultiUpload value={field.value} onChange={field.onChange} />
+                  <MultiUpload value={field.value} onChange={field.onChange}  />
                 )}
               />
             </div>

@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { TbPhotoPlus, TbX } from "react-icons/tb";
 
@@ -46,6 +46,12 @@ const MultiUpload = ({ value, onChange }: ImageProps) => {
       };
     });
   };
+
+  useEffect(() => {
+    if (value) {
+      setPreviews(value);
+    }
+  })
 
   const handleRemoveImage = (index: number) => {
     const updatedPreviews = previews.filter((_, i) => i !== index);

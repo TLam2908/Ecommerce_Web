@@ -8,7 +8,7 @@ cloudinary.config({
 
 type uploadImageType = {
   image_src: string;
-  uploadPreset: string;
+  uploadPreset?: string;
   image_id?: string;
 };
 
@@ -20,15 +20,18 @@ export const uploadImage = async ({
     upload_preset: uploadPreset,
     timeout: 100000,
   });
-  const fix_id = uploadResponse.public_id.split("/")[1];
+
+  console.log(uploadResponse)
 
   return {
     image_src: uploadResponse.secure_url,
-    image_id: fix_id,
+    image_id: uploadResponse.public_id,
   };
 };
 
 export const deleteImage = async (image_id: string) => {
+
+
   return await cloudinary.uploader.destroy(image_id, {
     resource_type: "image",
     timeout: 100000,
@@ -38,10 +41,8 @@ export const deleteImage = async (image_id: string) => {
 export const updateImage = async ({
   image_src,
   image_id,
-  uploadPreset,
 }: uploadImageType) => {
   const uploadResponse = await cloudinary.uploader.upload(image_src, {
-    upload_preset: uploadPreset,
     public_id: image_id,
     timeout: 100000,
   });

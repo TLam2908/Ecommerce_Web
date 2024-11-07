@@ -46,10 +46,13 @@ const BillboardsForm = () => {
     action = "Save changes";
   }
 
+  const billboardId = Array.isArray(params.billboardId) ? params.billboardId[0] : params.billboardId;
+
+
   const { data, isPending } = useQuery({
-    queryKey: ["billboards", params.billboardId],
-    queryFn: () => getBillBoardById(params.billboardId[0]),
-    enabled: params.billboardId !== "new",
+    queryKey: ["billboards", billboardId],
+    queryFn: () => getBillBoardById(billboardId),
+    enabled: billboardId !== "new",
   });
 
   const {
@@ -102,10 +105,10 @@ const BillboardsForm = () => {
   }, [data, form]);
 
   const onSubmit = (data: z.infer<typeof BillboardSchema>) => {
-    if (params.billboardId === "new") {
+    if (billboardId === "new") {
       add({ ...data, image_src: imageSrc || "" }); // Add new billboard
     } else {
-      update({ ...data, image_src: imageSrc || "", id: params.billboardId[0] }); // Update existing billboard
+      update({ ...data, image_src: imageSrc || "", id: billboardId }); // Update existing billboard
     }
   };
 

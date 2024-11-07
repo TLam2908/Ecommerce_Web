@@ -44,10 +44,12 @@ const ModelsForm = () => {
     action = "Save changes";
   }
 
+  const modelId = Array.isArray(params.modelId) ? params.modelId[0] : params.modelId;
+
   const { data, isPending } = useQuery({
-    queryKey: ["models", params.modelId],
-    queryFn: () => getModelById(params.modelId[0]),
-    enabled: params.modelId !== "new",
+    queryKey: ["models", modelId],
+    queryFn: () => getModelById(modelId),
+    enabled: modelId !== "new",
   });
 
   const {
@@ -100,10 +102,10 @@ const ModelsForm = () => {
   }, [data, form]);
 
   const onSubmit = (data: z.infer<typeof ModelSchema>) => {
-    if (params.modelId === "new") {
+    if (modelId === "new") {
       add(data);
     } else {
-      update({ id: params.modelId[0], ...data });
+      update({ id: modelId, ...data });
     }
   };
 

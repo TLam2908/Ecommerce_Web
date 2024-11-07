@@ -58,10 +58,12 @@ const CategoriesForm = () => {
     action = "Save changes";
   }
 
+  const categoryId = Array.isArray(params.categoryId) ? params.categoryId[0] : params.categoryId;
+
   const { data: categoryData, isPending: categoryPending } = useQuery({
-    queryKey: ["categories", params.categoryId],
-    queryFn: () => getCategoryById(params.categoryId[0]),
-    enabled: params.categoryId !== "new",
+    queryKey: ["categories", categoryId],
+    queryFn: () => getCategoryById(categoryId[0]),
+    enabled: categoryId !== "new",
   });
 
   console.log(categoryData)
@@ -124,11 +126,11 @@ const CategoriesForm = () => {
   }, [categoryData, form]);
 
   const onSubmit = (data: z.infer<typeof CategorySchema>) => {
-    if (params.categoryId === "new") {
+    if (categoryId === "new") {
       add(data);
     } else {
       console.log(data);
-      update({ ...data, id: params.categoryId[0] });
+      update({ ...data, id: categoryId });
     }
   };
 

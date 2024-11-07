@@ -52,10 +52,12 @@ const UserForm = () => {
     edit = true;
   }
 
+  const userId = Array.isArray(params.userId) ? params.userId[0] : params.userId; 
+
   const { data, isPending } = useQuery({
-    queryKey: ["users", params.userId],
-    queryFn: () => getUserById(params.userId[0]),
-    enabled: params.userId !== "new",
+    queryKey: ["users", userId],
+    queryFn: () => getUserById(userId),
+    enabled: userId !== "new",
   });
 
   const {
@@ -115,7 +117,7 @@ const UserForm = () => {
 
   const onSubmit = (data: z.infer<typeof UserSchema>) => {
     console.log(data);
-    if (params.userId === "new") {
+    if (userId === "new") {
       add({
         ...data,
         address: data.address || "",
@@ -125,7 +127,7 @@ const UserForm = () => {
     } else {
       update({
         ...data,
-        id: params.userId[0],
+        id: userId,
         address: data.address || "",
         phone_number: data.phone_number || "",
         image_src: data.image_src || "",

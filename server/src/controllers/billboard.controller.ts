@@ -76,7 +76,6 @@ export const updateBillboardHandler = catchErrors(async (req, res) => {
   const updatedImage = await updateImage({
     image_src: request.image_src,
     image_id: currentBillboard.image_id,
-    uploadPreset: "ImageUploads",
   });
 
   appAssert(updatedImage, UNPROCESSABLE_CONTENT, "Image update failed");
