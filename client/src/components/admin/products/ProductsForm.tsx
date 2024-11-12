@@ -20,7 +20,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { z } from "zod";
 import { useRouter, useParams } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -38,7 +38,6 @@ import toast from "react-hot-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ProductSchema } from "@/interface/product";
 import { ImSpinner8 } from "react-icons/im";
-import { set } from "date-fns";
 
 const ProductForm = () => {
   const params = useParams();
@@ -90,9 +89,9 @@ const ProductForm = () => {
   });
 
   const formatModel = modelData?.data?.map(
-    (model: { name: string; id: string }) => ({
+    (model: { name: string; id: string, year: string }) => ({
       value: model.id.toString(),
-      label: model.name,
+      label: model.name + ' (' + model.year + ')',
     })
   );
 
@@ -133,6 +132,7 @@ const ProductForm = () => {
       description: "",
       price: "",
       oem_number: "",
+      quantity: "",
       category_name: "",
       manufacturer_name: "",
       model_id: [],
@@ -147,6 +147,7 @@ const ProductForm = () => {
         description: data?.data.description,
         price: data?.data.price.toString(),
         oem_number: data?.data.oem_number,
+        quantity: data?.data.quantity.toString(),
         category_name: data?.data.Category.name,
         manufacturer_name: data?.data.Manufacturer.name,
         model_id: data?.data.Autopart_Model.map(
@@ -271,6 +272,25 @@ const ProductForm = () => {
                 ></FormField>
               </div>
               <div className="flex flex-col gap-5 w-[500px]">
+              <FormField
+                  control={form.control}
+                  name="quantity"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-lg font-semibold">
+                        Quantity
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Enter quantity"
+                          className="focus:border border-black"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage></FormMessage>
+                    </FormItem>
+                  )}
+                ></FormField>
                 <FormField
                   control={form.control}
                   name="category_name"

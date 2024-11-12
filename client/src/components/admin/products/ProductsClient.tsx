@@ -5,7 +5,6 @@ import { Separator } from "@/components/ui/separator"
 import Heading from "@/components/ui/heading"
 import { Plus } from "lucide-react"
 
-import { format } from "date-fns"
 import { ProductColumn, columns } from "./ProductsColumn"
 import { useRouter } from "next/navigation"
 import { useQuery } from "@tanstack/react-query"
@@ -18,6 +17,7 @@ interface ProductsClientProps {
     description: string;
     price: string;
     oem_number: string;
+    quantity: string;
     Category: Category;
     Manufacturer: Manufacturer;
     Images: Image[];
@@ -36,6 +36,7 @@ interface Manufacturer {
 interface AutopartModel {
     Model: {
         name: string;
+        year: string;
     };
 }
 
@@ -57,10 +58,11 @@ const ProductsClient = () => {
         name: product.name,
         description: product.description,
         price: product.price,
+        quantity: product.quantity,
         oem_number: product.oem_number,
         category: product.Category.name,
         manufacturer: product.Manufacturer.name,
-        models: product.Autopart_Model.map((model) => model.Model.name),
+        models: product.Autopart_Model.map((model) => `${model.Model.name} (${model.Model.year})`),
         images: product.Images.map((image: Image) => image.src),
     })) || []
 
@@ -87,3 +89,4 @@ const ProductsClient = () => {
 }
 
 export default ProductsClient
+

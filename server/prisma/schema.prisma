@@ -52,6 +52,7 @@ model Autopart {
   price Int
   manufacturer_id Int
   category_id Int
+  quantity Int
 
   Autopart_Model Autopart_Model[]
   

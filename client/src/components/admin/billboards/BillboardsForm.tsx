@@ -85,7 +85,6 @@ const BillboardsForm = () => {
     },
   });
 
-  const [imageSrc, setImageSrc] = useState<string | null>(null); // State to manage the uploaded image
 
   const form = useForm({
     resolver: zodResolver(BillboardSchema),
@@ -99,16 +98,17 @@ const BillboardsForm = () => {
     if (data?.data) {
       form.reset({
         title: data?.data?.title,
+        image_src: data?.data?.image_src,
       });
-      setImageSrc(data?.data?.image_src); // Set the image if it exists
     }
   }, [data, form]);
 
   const onSubmit = (data: z.infer<typeof BillboardSchema>) => {
     if (billboardId === "new") {
-      add({ ...data, image_src: imageSrc || "" }); // Add new billboard
+      add({ ...data }); // Add new billboard
     } else {
-      update({ ...data, image_src: imageSrc || "", id: billboardId }); // Update existing billboard
+      console.log(data)
+      update({ ...data, id: billboardId }); // Update existing billboard
     }
   };
 
@@ -156,14 +156,12 @@ const BillboardsForm = () => {
                     <FormLabel className="text-lg font-semibold">Image</FormLabel>
                     <FormControl>
                       <ImageUpload
-                        value={field.value || imageSrc || ""} // Use field value or fallback to imageSrc or empty string
+                        value={field.value} // Use field value or fallback to imageSrc or empty string
                         onChange={(image) => {
                           field.onChange(image); // Update form value
-                          setImageSrc(image); // Update component state if needed
                         }}
                         onRemove={() => {
                           field.onChange(null); // Remove image from form state
-                          setImageSrc(null); // Update component state
                         }}
                       />
                     </FormControl>

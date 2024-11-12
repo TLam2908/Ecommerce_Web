@@ -12,6 +12,7 @@ export type CreateAutopartParams = {
   oem_number: string;
   category_name: string;
   manufacturer_name: string;
+  quantity: string;
   model_id: string[];
   images: string[];
 };
@@ -53,6 +54,7 @@ export const createAutopart = async (data: CreateAutopartParams) => {
         name: data.name,
         description: data.description,
         oem_number: data.oem_number,
+        quantity: parseInt(data.quantity),
         price: parseInt(data.price),
         category_id: category.id,
         manufacturer_id: manufacturer.id,
@@ -161,6 +163,7 @@ export const updateAutopart = async (
       description: data.description,
       price: parseInt(data.price),
       oem_number: data.oem_number,
+      quantity: parseInt(data.quantity),
       category_id: category.id,
       manufacturer_id: manufacturer.id,
     },

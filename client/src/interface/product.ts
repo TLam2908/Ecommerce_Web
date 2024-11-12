@@ -10,6 +10,9 @@ export const ProductSchema = z.object({
     price: z.string().min(1, {
         message: 'Price must be filled'
     }),
+    quantity: z.string().min(1, {
+        message: 'Quantity must be filled'
+    }),
     oem_number: z.string().min(1, {
         message: 'OEM Number must be filled'
     }),

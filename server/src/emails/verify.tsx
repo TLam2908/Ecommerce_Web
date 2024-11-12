@@ -24,7 +24,7 @@ import {
     return (
       <Html>
         <Head />
-        <Preview>AWS Email Verification</Preview>
+        <Preview>AutoPart Email Verification</Preview>
         <Body style={main}>
           <Container style={container}>
             <Section style={coverSection}>

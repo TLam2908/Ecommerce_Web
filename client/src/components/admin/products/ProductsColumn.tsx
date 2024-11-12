@@ -15,6 +15,7 @@ export type ProductColumn = {
   oem_number: string;
   category: string;
   manufacturer: string;
+  quantity: string;
   models: string[];
   images: string[];
 };
@@ -59,6 +60,10 @@ export const columns: ColumnDef<ProductColumn>[] = [
   {
     accessorKey: "oem_number",
     header: "OEM Number",
+  },
+  {
+    accessorKey: "quantity",
+    header: "Quantity",
   },
   {
     accessorKey: "category",

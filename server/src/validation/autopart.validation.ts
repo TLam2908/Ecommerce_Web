@@ -19,6 +19,9 @@ export const autopartSchema = z.object({
   manufacturer_name: z.string().min(1, {
     message: "Manufacturer name must be filled",
   }),
+  quantity: z.string().min(1, {
+    message: "Quantity must be filled",
+  }),
   model_id: z.array(z.string(), {
     message: "Model ID must be filled",
   }),
