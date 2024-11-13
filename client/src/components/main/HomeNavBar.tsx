@@ -39,7 +39,6 @@ const HomeNavBar = () => {
       </div>
     );
   }
-  console.log(data?.data);
 
   return (
     <div className="border-b">

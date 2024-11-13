@@ -6,6 +6,8 @@ const options = {
   withCredentials: true,
 };
 
+export const HOME_API = axios.create(options)
+
 const AUTH_API = axios.create(options);
 const TokenRefreshClient = axios.create(options);
 TokenRefreshClient.interceptors.response.use((response) => response.data);
@@ -35,3 +37,4 @@ AUTH_API.interceptors.response.use(
 
 
 export default AUTH_API;
+

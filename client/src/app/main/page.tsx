@@ -1,29 +1,22 @@
 import Billboard from "@/components/main/Billboard";
 import Container from "@/components/ui/container";
+import ProductList from "@/components/main/ProductList";
 
-import {
-  dehydrate,
-  HydrationBoundary,
-  QueryClient,
-} from "@tanstack/react-query";
-import { getBillBoardById } from "@/lib/authApi";
+import { getAutoparts, getBillboards} from "@/lib/homeApi";
 
 const MainPage = async () => {
-  const queryClient = new QueryClient();
-
-  await queryClient.prefetchQuery({
-    queryKey: ["billboard"],
-    queryFn: () => getBillBoardById("2"),
-  });
-
+    const billboards = await getBillboards();
+    const products = await getAutoparts();
+  
   return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      <Container>
-        <div className="space-y-10 pb-10 bg-white">
-          <Billboard />
-        </div>
-      </Container>
-    </HydrationBoundary>
+    <Container>
+      <div className="space-y-10 pb-10 bg-white">
+        <Billboard data={billboards.data}/>
+      </div>
+      <div className="flex flex-col gap-y-8 px-4 sm:px-6 lg:px-8 bg-white">
+        <ProductList title="Featured products" data={products.data}/>
+      </div>
+    </Container>
   );
 };
 

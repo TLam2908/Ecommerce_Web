@@ -17,6 +17,7 @@ import manufacturerRoutes from "./routes/manufacturer.route";
 import categoryRoutes from "./routes/category.route";
 import modelRoutes from "./routes/model.route";
 import autopartRoutes from "./routes/autopart.route";
+import homeRoutes from "./routes/home.route";
 
 const app = express();
 
@@ -34,7 +35,9 @@ app.get("/", (req: Request, res: Response, next) => {
   return res.status(OK).json({ message: "Hello World" });
 });
 // auth routes
+app.use("/home", homeRoutes);
 app.use("/auth", authRoutes)
+
 
 // protected routes
 app.use("/users", authenticate, userRoutes);
