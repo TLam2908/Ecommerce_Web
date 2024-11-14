@@ -1,7 +1,6 @@
 import { Router } from 'express';
 
-import { getHomeAutoparts, getHomeAutopartById, getHomeBillboards, getHomeBillboardById } from '../controllers/home.controller';
-import { getBillboardHandler } from '../controllers/billboard.controller';
+import { getHomeAutoparts, getHomeAutopartById, getHomeBillboards, getHomeBillboardById, getAutopartsByCategory, getCategoryById, getManufacturers, getModels } from '../controllers/home.controller';
 
 const homeRoutes = Router();    
 
@@ -10,5 +9,11 @@ homeRoutes.get("/homeBillboards", getHomeBillboards)
 homeRoutes.get("/homeBillboard/:id", getHomeBillboardById)
 homeRoutes.get("/homeAutoparts", getHomeAutoparts)
 homeRoutes.get("/homeAutopart/:id", getHomeAutopartById)
+homeRoutes.get("/relatedAutoparts/:id", getAutopartsByCategory)    
+
+homeRoutes.get("/homeCategory/:id", getCategoryById)
+homeRoutes.get("/homeManufacturers", getManufacturers)
+homeRoutes.get("/homeModels", getModels)
+
 
 export default homeRoutes

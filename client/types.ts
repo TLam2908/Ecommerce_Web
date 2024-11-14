@@ -30,10 +30,16 @@ export interface Product {
     id: string;
     name: string;
     description: string;
-    price: string
+    price: string;
+    quantity: string;
     oem_number: string;
     Category: Category;
-    manufacturer: Manufacturer;
+    Manufacturer: Manufacturer;
     Images: { src: string }[];
-    Models: Model[];
+    Autopart_Model: { Model: Model }[];
+}
+
+export interface Image {
+    id: string;
+    src: string;
 }

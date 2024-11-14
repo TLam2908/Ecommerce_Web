@@ -17,7 +17,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
 
   if (isLoading) {
     return (
-      <div className="text-center flex h-screen justify-center items-center">
+      <div className="text-center flex h-screen justify-center items-center bg-white">
         <div role="status">
           <svg
             aria-hidden="true"
