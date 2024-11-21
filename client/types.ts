@@ -35,7 +35,9 @@ export interface Product {
     oem_number: string;
     Category: Category;
     Manufacturer: Manufacturer;
-    Images: { src: string }[];
+    Images: {
+        id: string; src: string 
+}[];
     Autopart_Model: { Model: Model }[];
 }
 

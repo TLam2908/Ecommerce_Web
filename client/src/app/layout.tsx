@@ -4,6 +4,7 @@ import QueryWrapper from "@/config/QueryWrapper";
 import { Toaster } from "react-hot-toast";
 import {Inter} from "next/font/google"
 import "./globals.css";
+import ModalProvider from "@/config/ModalProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -34,6 +35,7 @@ export default function RootLayout({
         <body
           className={`${inter.className} antialiased bg-[#EAEEFE]`}
         >
+          <ModalProvider />
           {children}
           <Toaster />
         </body>

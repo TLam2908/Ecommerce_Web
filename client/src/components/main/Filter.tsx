@@ -22,6 +22,7 @@ const Filter: React.FC<FilterProps> = ({ manuData, modelData }) => {
   const [selectedModels, setSelectedModels] = useState<string[]>(
     searchParams.getAll("modelId") || []
   );
+  const [searchInput, setSearchInput] = useState("");
 
   const applyFilters = () => {
     const current = qs.parse(searchParams.toString());
@@ -30,6 +31,7 @@ const Filter: React.FC<FilterProps> = ({ manuData, modelData }) => {
       manufacturerId:
         selectedManufacturers.length > 0 ? selectedManufacturers : null,
       modelId: selectedModels.length > 0 ? selectedModels : null,
+      search: searchInput || null,
     };
 
     const url = qs.stringifyUrl(
@@ -46,12 +48,14 @@ const Filter: React.FC<FilterProps> = ({ manuData, modelData }) => {
   const onClear = () => {
     setSelectedManufacturers([]); // Clear manufacturers
     setSelectedModels([]); // Clear models
+    setSearchInput("");
 
     const current = qs.parse(searchParams.toString());
     const query = {
       ...current,
       manufacturerId: null,
       modelId: null,
+      search: null,
     };
 
     const url = qs.stringifyUrl(
@@ -67,7 +71,17 @@ const Filter: React.FC<FilterProps> = ({ manuData, modelData }) => {
 
   return (
     <div className="mb-8">
-      <div className="flex flex-row gap-28 mb-2">
+      <div className="flex flex-col gap-4 mb-2">
+        <div>
+          <h3 className="text-lg font-semibold">Search by OEM or Name</h3>
+          <input
+            type="text"
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+            placeholder="Enter OEM number or Name"
+            className="border border-gray-300 rounded px-2 py-1 w-full"
+          />
+        </div>
         <div>
           <h3 className="text-lg font-semibold">Manufacturer</h3>
           <MultiSelect
@@ -79,21 +93,21 @@ const Filter: React.FC<FilterProps> = ({ manuData, modelData }) => {
             onValueChange={(values) => {
               setSelectedManufacturers(values);
             }}
-            className="text-black w-[300px]"
+            className="text-black"
           />
         </div>
         <div>
           <h3 className="text-lg font-semibold">Model</h3>
           <MultiSelect
             options={modelData.map((item: Model) => ({
-              label: item.name,
+              label: item.name + ' (' + (item.year) + ')',
               value: item.id.toString(),
             }))}
             value={selectedModels} // Use selectedModels state
             onValueChange={(values) => {
               setSelectedModels(values);
             }}
-            className="text-black w-[300px]"
+            className="text-black"
           />
         </div>
       </div>

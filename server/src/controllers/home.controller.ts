@@ -118,11 +118,21 @@ export const getModels = catchErrors(async (req, res) => {
 })
 
 export const getFilterAutoparts = catchErrors(async (req, res) => {
-  const { categoryId, manufacturerId, modelId } = req.query;
+  const { categoryId, manufacturerId, modelId, search } = req.query;
+
+
+
   const autoparts = await prisma.autopart.findMany({
     where: {
-      // category_id: categoryId ? parseInt(categoryId) : undefined,
-      // manufacturer_id: manufacturerId ? parseInt(manufacturerId) : undefined,
+      category_id: categoryId ? parseInt(categoryId as string) : undefined,
+      manufacturer_id: manufacturerId ? parseInt(manufacturerId as string) : undefined,
+      Autopart_Model: modelId ? { some: { model_id: parseInt(modelId as string) } } : undefined,
+      OR: search
+        ? [
+            { oem_number: { contains: search as string, mode: "insensitive" }},
+            { name: {contains: search as string, mode: "insensitive" }},
+          ]
+        : undefined,
     },
     include: {
       Images: true,

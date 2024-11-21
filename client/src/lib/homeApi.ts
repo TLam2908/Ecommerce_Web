@@ -10,3 +10,5 @@ export const getRelatedAutoparts = async (id: string) => HOME_API.get(`/home/rel
 export const getCategoryById = async (id: string) => HOME_API.get(`/home/homeCategory/${id}`)
 export const getManufacturers = async () => HOME_API.get('/home/homeManufacturers') 
 export const getModels = async () => HOME_API.get('/home/homeModels')       
+
+export const getFilterAutoparts = async (params: { categoryId: string, manufacturerId?: string, modelId?: string, search?:string }) => HOME_API.get('/home/homeAutopartsFilter', { params })

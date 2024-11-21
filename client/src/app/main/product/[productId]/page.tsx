@@ -13,7 +13,9 @@ interface ProductPageProps {
 }
 
 const ProductPage: React.FC<ProductPageProps> = async ({ params }) => {
+
   const product = await getAutopartById(params.productId);
+  console.log("data1: ", product.data.Images);
   const relatedAutoparts = await getRelatedAutoparts(params.productId);
   const filterRelatedAutoparts = relatedAutoparts.data.filter(
     (autopart: ProductType) => autopart.id.toString() !== params.productId
