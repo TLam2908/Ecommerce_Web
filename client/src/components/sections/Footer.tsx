@@ -31,7 +31,7 @@ export const Footer = () => {
           <FaTiktok size={24} color="white"/>
           <FaPinterest size={24} color="white"/>
         </div>
-        <p className="mt-6">&copy; 2024 Your Company, Inc. All rights reserved.</p>
+        <p className="mt-6">&copy; 2024 AutoPart, Inc. All rights reserved.</p>
       </div>
     </footer>
   )

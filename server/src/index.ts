@@ -2,7 +2,7 @@ import express, { Request, Response } from "express";
 import "dotenv/config";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-const bodyParser = require('body-parser');
+const bodyParser = require("body-parser");
 
 import { PORT, NODE_ENV, APP_ORIGIN } from "./constants/env";
 import { OK } from "./constants/http";
@@ -17,12 +17,16 @@ import manufacturerRoutes from "./routes/manufacturer.route";
 import categoryRoutes from "./routes/category.route";
 import modelRoutes from "./routes/model.route";
 import autopartRoutes from "./routes/autopart.route";
+import paymentRoutes from "./routes/payment.route";
 import homeRoutes from "./routes/home.route";
+import webhookRoutes from "./routes/webhook.route";
 
 const app = express();
 
-app.use(express.json({limit: '50mb'}));
-app.use(express.urlencoded({limit: '50mb', extended: true}));
+app.use("/webhook", bodyParser.raw({ type: "application/json" }), webhookRoutes);
+
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use(
   cors({
     origin: APP_ORIGIN,
@@ -36,8 +40,7 @@ app.get("/", (req: Request, res: Response, next) => {
 });
 // auth routes
 app.use("/home", homeRoutes);
-app.use("/auth", authRoutes)
-
+app.use("/auth", authRoutes);
 
 // protected routes
 app.use("/users", authenticate, userRoutes);
@@ -47,8 +50,7 @@ app.use("/manufacturers", authenticate, manufacturerRoutes);
 app.use("/categories", authenticate, categoryRoutes);
 app.use("/models", authenticate, modelRoutes);
 app.use("/autoparts", authenticate, autopartRoutes);
-
-
+app.use("/payments", authenticate, paymentRoutes);
 app.use(errorHandler);
 
 app.listen(PORT, () => {

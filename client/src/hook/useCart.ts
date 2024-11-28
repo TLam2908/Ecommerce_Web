@@ -63,7 +63,6 @@ const useCart = create(
       },
       removeAll: () => {
         set({ items: [] });
-        toast.success("All items removed from cart");
       },
       increaseQuantity: (id: string, amount: number = 1) => {
         const { items } = get();

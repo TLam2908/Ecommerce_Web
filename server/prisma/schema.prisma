@@ -125,11 +125,15 @@ model Cart {
   id Int @id @default(autoincrement())
   user_id Int
   total Int
+  isPaid Boolean 
+  isSent Boolean @default(false)
+  phone String @default("")
+  address String @default("")
+  createdAt DateTime @default(now())
 
   User User @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   CartItem CartItem[]
-  Payment Payment[]
 }
 
 model CartItem {
@@ -140,17 +144,6 @@ model CartItem {
 
   Cart Cart @relation(fields: [cart_id], references: [id], onDelete: Cascade)
   Autopart Autopart @relation(fields: [autopart_id], references: [id])
-}
-
-model Payment {
-  id Int @id @default(autoincrement())
-  user_id Int
-  cart_id Int
-  amount Int
-  payment_status String
-  payment_date DateTime
-
-  Cart Cart @relation(fields: [cart_id], references: [id])
 }
 
 model Billboard {

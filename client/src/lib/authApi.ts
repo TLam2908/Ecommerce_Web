@@ -142,3 +142,19 @@ export const updateAutopart = async (data: { id: string } & AutopartParam) =>
   AUTH_API.put(`/autoparts/${data.id}`, data);
 export const deleteAutopart = async (id: string) =>
   AUTH_API.delete(`/autoparts/${id}`);
+
+
+// payments
+interface PaymentParam {
+  userData: {
+    email: string;
+    name: string;
+  },
+  paymentData: {
+    productIds: string[];
+    quantities: number[];
+  }
+}
+
+export const createPaymentStripe = async (data: PaymentParam) =>
+  AUTH_API.post("/payments/checkout", data);

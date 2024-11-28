@@ -50,5 +50,7 @@ export const deleteUserHandler = catchErrors(async (req, res) => {
 export const currentUserHandler = catchErrors(async (req, res) => {
     const id = req.userId;
     const safeUser = await currentUser(id);
-    return res.status(OK).json(safeUser);
+    return res.status(OK).json({
+      data: safeUser
+    });
 })

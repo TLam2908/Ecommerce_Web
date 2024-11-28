@@ -1,16 +1,18 @@
 "use client";
 
-import axios from "axios";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { toast } from "react-hot-toast";
 
+import { createPaymentStripe } from "@/lib/authApi";
 import { Button } from "@/components/ui/button";
 import Currency from "../ui/currency";
 import useCart from "@/hook/useCart";
+import useAuth from "@/hook/useAuth";
 
 const Summary = () => {
     const searchParams = useSearchParams();
+    const { user } = useAuth();
     const { items } = useCart();
     const cart = useCart();
     const [total, setTotal] = useState(0);
@@ -34,7 +36,25 @@ const Summary = () => {
     }, [searchParams, cart.removeAll])
 
     const onCheckout = async () => {
+      console.log(user)
+      if (!user) {
+        toast.error("User not found");
+        return;
+      }
 
+      const data = {
+        userData: {
+          email: user.data.email,
+          name: user.data.name
+        },
+        paymentData: {
+          productIds: items.map(item => item.product.id),
+          quantities: items.map(item => item.quantity)
+        }
+      }
+      const response = await createPaymentStripe(data);
+      const stripeUrl = response.data;
+      window.location.href = stripeUrl;
     }
 
   return (

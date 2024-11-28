@@ -1,6 +1,5 @@
 import { PrismaClient } from "@prisma/client";
 import appAssert from "../utils/appAssert";
-import catchErrors from "../utils/catchError";
 import { INTERNAL_SERVER_ERROR } from "../constants/http";
 import { uploadImage, deleteImage, updateImage } from "../utils/imageUpload";
 
