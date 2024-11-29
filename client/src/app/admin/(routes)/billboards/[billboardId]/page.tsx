@@ -2,7 +2,7 @@ import BillboardsForm from "@/components/admin/billboards/BillboardsForm";
 
 const BillboardFormPage = () => {
     return (
-        <div>
+        <div className="bg-white">
             <BillboardsForm />
         </div>
     );

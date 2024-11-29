@@ -2,7 +2,7 @@ import ManufacturersForm from "@/components/admin/manufacturers/ManufacturersFor
 
 const ManufacturerFormPage = () => {  
     return (
-        <div>
+        <div className="bg-white">
             <ManufacturersForm />
         </div>
     );

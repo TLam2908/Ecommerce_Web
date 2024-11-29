@@ -158,3 +158,17 @@ interface PaymentParam {
 
 export const createPaymentStripe = async (data: PaymentParam) =>
   AUTH_API.post("/payments/checkout", data);
+
+// orders
+interface OrderParam {
+  phone: string;
+  address: string;
+}
+
+export const getOrders = async () => AUTH_API.get("/orders");
+export const getOrderById = async (id: string) => AUTH_API.get(`/orders/${id}`);
+export const createOrder = async (data: OrderParam) =>
+  AUTH_API.post("/orders", data);
+export const updateOrder = async (data: { id: string } & OrderParam) =>
+  AUTH_API.put(`/orders/${data.id}`, data);
+export const deleteOrder = async (id: string) => AUTH_API.delete(`/orders/${id}`);

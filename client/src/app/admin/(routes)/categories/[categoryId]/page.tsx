@@ -2,7 +2,7 @@ import CategoriesForm from "@/components/admin/categories/CategoriesForm";
 
 const CategoryFormPage = () => {
     return (
-        <div>
+        <div className="bg-white">
             <CategoriesForm />
         </div>
     );

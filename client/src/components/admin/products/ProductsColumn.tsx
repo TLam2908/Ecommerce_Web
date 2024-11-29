@@ -99,7 +99,6 @@ export const columns: ColumnDef<ProductColumn>[] = [
       };
       return (
         <div className="w-[220px] h-[180px]">
-          {/* Điều chỉnh kích thước nếu cần */}
           <Slider {...settings}>
             {row.original.images?.map((image, index) => (
               <div key={index} className="relative w-full h-full border border-black">

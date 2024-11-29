@@ -45,3 +45,9 @@ export interface Image {
     id: string;
     src: string;
 }
+
+export interface CartItem {
+    id: string;
+    quantity: string;
+    Autopart: Product;
+}

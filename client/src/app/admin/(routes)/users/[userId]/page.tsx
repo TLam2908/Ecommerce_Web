@@ -1,7 +1,7 @@
 import UserForm from "@/components/admin/users/UsersForm";
 const UserFormPage = () => {
     return (
-        <div>
+        <div className="bg-white">
            <UserForm />
         </div>
     );

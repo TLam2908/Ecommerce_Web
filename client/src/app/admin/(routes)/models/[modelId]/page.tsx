@@ -2,7 +2,7 @@ import ModelsForm from "@/components/admin/models/ModelsForm";
 
 const ModelFormPage = () => {
     return (
-        <div>
+        <div className="bg-white">
             <ModelsForm />
         </div>
     );

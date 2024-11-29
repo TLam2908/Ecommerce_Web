@@ -2,7 +2,7 @@ import ProductsForm from "@/components/admin/products/ProductsForm";
 
 const ProductsPage = () => {
     return (
-        <div>
+        <div className="bg-white">
             <ProductsForm />
         </div>
     );
