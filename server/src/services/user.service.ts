@@ -108,20 +108,22 @@ export const getUserById = async (id: string) => {
     where: {
       id: parseInt(id),
     },
+    include: {
+      Cart: {
+        include: {
+          CartItem: {
+            include: {
+              Autopart: true
+            }
+          }
+        }
+      }
+    }
   });
 
   appAssert(user, NOT_FOUND, "User not found");
-  const safeUser = {
-    id: user.id,
-    email: user.email,
-    name: user.name,
-    phone_number: user.phone_number,
-    address: user.address,
-    image_src: user.image_src,
-    role: user.role,
-    verified: user.verified,
-  };
-  return safeUser;
+  
+  return user;
 };
 
 export const getUsers = async () => {

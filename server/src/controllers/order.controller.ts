@@ -46,6 +46,19 @@ export const getOrderByIdHandler = catchErrors(async (req, res) => {
     });
 })
 
+export const getOrderByUserId = catchErrors(async (req, res) => {
+    const { userId } = req.params;
+    const orders = await prisma.cart.findMany({
+        where: {
+            user_id: parseInt(userId),
+        },
+    })
+    appAssert(orders, NOT_FOUND, "Orders not found");
+    return res.status(OK).json({
+        data: orders,
+    })
+})
+
 export const deleteOrderHandler = catchErrors(async (req, res) => {
     const { id } = req.params;
 

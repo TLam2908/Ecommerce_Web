@@ -109,7 +109,7 @@ const LoginForm = () => {
                     <div className="relative">
                       <Input
                         placeholder="Enter your password"
-                        className="focus:border border-black pr-10"
+                        className="focus:border focus:border-black pr-10"
                         type={showPassword ? "text" : "password"}
                         {...field}
                       />

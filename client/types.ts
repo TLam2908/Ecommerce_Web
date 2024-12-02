@@ -46,8 +46,28 @@ export interface Image {
     src: string;
 }
 
+
+export interface Cart {
+    id: string;
+    total: number;
+    isPaid: boolean;
+    isSent: boolean;
+    createdAt: string;
+    CartItem: CartItem[];
+}
+
 export interface CartItem {
     id: string;
-    quantity: string;
+    quantity: number;
     Autopart: Product;
+}
+
+export interface User {
+    id: string;
+    email: string;
+    name: string;
+    phone_number: string;
+    address: string;
+    image_src: string;
+    image_id: string;
 }

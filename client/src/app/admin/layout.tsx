@@ -9,9 +9,8 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   const { user, isLoading } = useAuth();
   const router = useRouter();
   useEffect(() => {
-    // Chuyển hướng đến trang login nếu không có user sau khi tải xong
     if (!isLoading && !user) {
-      router.replace("/auth/login");
+      router.replace("/auth/login"); 
     }
   }, [user, isLoading, router]);
 

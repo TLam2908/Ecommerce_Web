@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Logo from '@/assets/landingPage/logosaas.png'
 import Avatar from "./Avatar";
 import MainNav from "./MainNav";
+import UserMenu from './main/UserMenu';
 
 const Navbar = () => {
     return (
@@ -14,7 +15,7 @@ const Navbar = () => {
                 </div>
                 <MainNav className="mx-6"/>
                 <div className="ml-auto flex items-center space-x-4">
-                    <Avatar />
+                    <UserMenu/>
                 </div>
             </div>
         </div>

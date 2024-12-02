@@ -117,7 +117,7 @@ const RegisterForm = () => {
                     <div className="relative">
                       <Input
                         placeholder="********"
-                        className="focus:border border-black pr-10" // Add padding to make space for the icon
+                        className="focus:border focus:border-black pr-10" // Add padding to make space for the icon
                         type={showPassword ? "text" : "password"}
                         {...field}
                       />
@@ -150,7 +150,7 @@ const RegisterForm = () => {
                     <div className="relative">
                       <Input
                         placeholder="********"
-                        className="focus:border border-black"
+                        className="focus:border focus:border-black"
                         type={showConfirmPassword ? "text" : "password"}
                         {...field}
                       />

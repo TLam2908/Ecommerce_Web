@@ -19,6 +19,9 @@ export const login = async (data: LoginParams) => {
 export const register = async (data: RegisterParams) => {
   return AUTH_API.post("/auth/register", data);
 };
+export const logout = async () => {
+  return AUTH_API.get("/auth/logout");
+}
 export const verifyEmail = async (id: string) => {
   return AUTH_API.get(`/auth/email/verify/${id}`);
 };
@@ -167,6 +170,7 @@ interface OrderParam {
 
 export const getOrders = async () => AUTH_API.get("/orders");
 export const getOrderById = async (id: string) => AUTH_API.get(`/orders/${id}`);
+export const getOrderByUserId = async (userId: string) => AUTH_API.get(`/orders/user/${userId}`);
 export const createOrder = async (data: OrderParam) =>
   AUTH_API.post("/orders", data);
 export const updateOrder = async (data: { id: string } & OrderParam) =>
