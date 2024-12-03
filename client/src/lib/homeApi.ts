@@ -12,3 +12,8 @@ export const getManufacturers = async () => HOME_API.get('/home/homeManufacturer
 export const getModels = async () => HOME_API.get('/home/homeModels')       
 
 export const getFilterAutoparts = async (params: { categoryId: string, manufacturerId?: string, modelId?: string, search?:string }) => HOME_API.get('/home/homeAutopartsFilter', { params })
+
+export const getTotalRevenue = async () => HOME_API.get("/statistics/revenue");
+export const getTotalSales = async () => HOME_API.get("/statistics/sales");
+export const getStock = async () => HOME_API.get("/statistics/stock");
+export const getGraphRevenue = async () => HOME_API.get("/statistics/graphRevenue");

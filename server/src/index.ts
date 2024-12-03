@@ -21,6 +21,7 @@ import paymentRoutes from "./routes/payment.route";
 import homeRoutes from "./routes/home.route";
 import webhookRoutes from "./routes/webhook.route";
 import orderRoutes from "./routes/order.route";
+import statisticRoutes from "./routes/statistic.route";
 
 const app = express();
 
@@ -42,6 +43,7 @@ app.get("/", (req: Request, res: Response, next) => {
 // auth routes
 app.use("/home", homeRoutes);
 app.use("/auth", authRoutes);
+app.use("/statistics", statisticRoutes)
 
 // protected routes
 app.use("/users", authenticate, userRoutes);

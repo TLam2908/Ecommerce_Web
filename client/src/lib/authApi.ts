@@ -175,3 +175,4 @@ export const createOrder = async (data: OrderParam) =>
 export const updateOrder = async (data: { id: string } & OrderParam) =>
   AUTH_API.put(`/orders/${data.id}`, data);
 export const deleteOrder = async (id: string) => AUTH_API.delete(`/orders/${id}`);
+
