@@ -62,8 +62,8 @@ export const columns: ColumnDef<UserColumn>[] = [
         <Image
           src={row.original.image_src}
           alt={row.original.name || "No name"}
-          height={50}
-          width={50}
+          height={70}
+          width={70}
           className="rounded-full"
         />
       ) : (

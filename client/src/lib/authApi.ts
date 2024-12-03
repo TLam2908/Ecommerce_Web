@@ -39,7 +39,6 @@ export const resetPassword = async (data: {
 // users
 interface UserParam {
   email: string;
-  password: string;
   name: string;
   address: string;
   phone_number: string;

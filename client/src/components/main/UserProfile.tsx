@@ -17,20 +17,20 @@ import { Separator } from "../ui/separator";
 
 const UserProfile = () => {
   const editUser = useEditUserModal();
-  const params = useParams();
   const router = useRouter();
+  const params = useParams();
 
   const userId = Array.isArray(params.userId)
     ? params.userId[0]
     : params.userId;
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["user", userId],
+    queryKey: ["userId", userId],
     queryFn: () => getUserById(userId),
   });
 
-  console.log(data?.data);
   const orderLength = data?.data.Cart.length;
+  const userAvatar = data?.data.image_src;
 
   return (
     <>
@@ -53,7 +53,7 @@ const UserProfile = () => {
               <div className="flex flex-row w-[380px] h-[240px] justify-around items-center shadow-2xl rounded-[20px] gap-6 px-6 py-6">
                 <div className="flex flex-col justify-center items-center text-center gap-4">
                   <Image
-                    src={avatar}
+                    src={userAvatar || avatar}
                     alt="Avatar"
                     width={70}
                     height={70}
@@ -118,7 +118,7 @@ const UserProfile = () => {
                       </button>
                       <button
                         className="rounded-lg hover:opacity-80 hover:bg-black hover:text-white hover:border-none transition w-[200px] p-2 border-black border-2"
-                        // onClick={editProfile.onChangePasswordOpen}
+                        onClick={() => router.push("/email/forgot")}
                       >
                         Change password
                       </button>

@@ -153,18 +153,24 @@ export const updateUser = async (id: string, data: CreateUserParams) => {
   });
 
   appAssert(user, NOT_FOUND, "User not found");
+  console.log(data)
 
   let uploadResponse = { image_src: user.image_src, image_id: user.image_id };
   if (data.image_src && user.image_id) {
     uploadResponse = await updateImage({
       image_src: data.image_src,
       image_id: user.image_id,
-      uploadPreset: "ImageUploads",
     });
     appAssert(uploadResponse, UNPROCESSABLE_CONTENT, "Image update failed");
   } else if (data.image_src === null && user.image_id) {
     uploadResponse = await deleteImage(user.image_id);
     appAssert(uploadResponse, UNPROCESSABLE_CONTENT, "Image delete failed");
+  } else if (data.image_src && user.image_id === null) {
+    uploadResponse = await uploadImage({
+      image_src: data.image_src,
+      uploadPreset: "ImageUploads" 
+    });
+    appAssert(uploadResponse, UNPROCESSABLE_CONTENT, "Image upload failed");
   }
 
   const updatedUser = await prisma.user.update({

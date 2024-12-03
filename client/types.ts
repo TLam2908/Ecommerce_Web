@@ -69,5 +69,4 @@ export interface User {
     phone_number: string;
     address: string;
     image_src: string;
-    image_id: string;
 }
