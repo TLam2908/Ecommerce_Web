@@ -9,7 +9,7 @@ const useAuth = (opts = {}) => {
   const { data: user, ...rest } = useQuery({
     queryKey: [AUTH],
     queryFn: getUser,
-    staleTime: Infinity,
+    // staleTime: Infinity,
     ...opts,
   });
 

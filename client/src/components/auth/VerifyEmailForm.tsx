@@ -61,7 +61,7 @@ const VerifyEmailForm = (props: VerifyEmailFormProps) => {
             </CardDescription>
           </CardContent>
           <CardFooter className="gap-10">
-            <Link href="/">
+            <Link href="/main">
               <Button>Back to home</Button>
             </Link>
           </CardFooter>

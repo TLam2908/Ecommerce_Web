@@ -7,6 +7,7 @@ import Container from "../ui/container";
 
 import { getCategories } from "@/lib/authApi";
 import { useQuery } from "@tanstack/react-query";
+import UserMenu from "./UserMenu";
 
 const HomeNavBar = () => {
   const { data, isPending } = useQuery({
@@ -43,12 +44,13 @@ const HomeNavBar = () => {
   return (
     <div className="border-b">
       <Container>
-        <div className="relative px-4 sm:px-6 lg:px-8 flex h-16 items-center">
+        <div className="relative px-4 sm:px-6 lg:px-8 flex gap-2 h-16 items-center">
           <Link href="/main" className="ml-4 flex lg:ml-0 gap-x-2">
             <p className="font-semibold text-xl">AUTOPART</p>
           </Link>
           <HomeMainNav data={data?.data} />
           <HomeNavBarAction />
+          <UserMenu />
         </div>
       </Container>
     </div>

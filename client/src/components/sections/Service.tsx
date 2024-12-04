@@ -42,7 +42,7 @@ const services = [
 
 export const Service = () => {
   return (
-    <section className="bg-white py-24">
+    <section className="bg-white py-24" id="service">
       <div className="">
         <div className="flex justify-center">
           <div className="text-sm inline-flex border border-gray-400 px-3 py-1 rounded-lg tracking-tight text-black">

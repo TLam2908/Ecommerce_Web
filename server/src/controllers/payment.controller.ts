@@ -1,6 +1,6 @@
 import appAssert from "../utils/appAssert";
 import catchErrors from "../utils/catchError";
-import { createPaymentStripe, successPaymentStripe, getTotalRevenue, getTotalSales, getStock } from "../services/payment.service";
+import { createPaymentStripe, successPaymentStripe } from "../services/payment.service";
 import { INTERNAL_SERVER_ERROR, OK } from "../constants/http";
 
 // prefix: /payment
@@ -23,25 +23,4 @@ export const successStripeHandler = catchErrors(async (req, res) => {
             message: "Payment success"
         })
     }
-})
-
-export const getTotalRevenueHandler = catchErrors(async (req, res) => {
-    const totalRevenue = await getTotalRevenue();
-    return res.status(OK).json({
-        data: totalRevenue
-    })
-})
-
-export const getTotalSalesHandler = catchErrors(async (req, res) => {
-    const totalSales = await getTotalSales();
-    return res.status(OK).json({
-        data: totalSales
-    })
-})
-
-export const getStockHandler = catchErrors(async (req, res) => {
-    const totalStock = await getStock();
-    return res.status(OK).json({
-        data: totalStock
-    })
 })

@@ -41,7 +41,7 @@ const featuredProducts = [
 
 export const ProductShowcase = () => {
   return (
-    <section className="py-24 bg-white overflow-x-clip">
+    <section className="py-24 bg-white overflow-x-clip" id="product">
       <div className="">
         <div className="max-w-[600px] mx-auto">
           <div className="flex justify-center">
@@ -67,6 +67,7 @@ export const ProductShowcase = () => {
                 md:grid-cols-2
                 lg:grid-cols-3
                 2xl:grid-cols-3
+                max-md:w-[550px]
                 gap-10
                 mt-10
                 px-20

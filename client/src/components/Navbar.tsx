@@ -1,7 +1,7 @@
+
 import Image from 'next/image';
 
 import Logo from '@/assets/landingPage/logosaas.png'
-import Avatar from "./Avatar";
 import MainNav from "./MainNav";
 import UserMenu from './main/UserMenu';
 

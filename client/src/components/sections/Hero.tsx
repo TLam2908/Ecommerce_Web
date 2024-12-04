@@ -20,7 +20,7 @@ export const Hero = () => {
   
 
   return (
-    <section ref={heroRef} className="pb-20 md:pt-5 md:pb-10 bg-[radial-gradient(ellipse_200%_100%_at_bottom_left,#183EC2,#EAEEFE_100%)] overflow-x-clip">
+    <section ref={heroRef} className="pb-20 md:pt-5 md:pb-10 bg-[radial-gradient(ellipse_200%_100%_at_bottom_left,#183EC2,#EAEEFE_100%)] overflow-x-clip" id="home">
       <div className="p-10 md:flex items-center">
         <div className="md:w-[478px] xl:w-[740px] lg:w-[450px]">
           <div className="text-sm inline-flex border border-gray-400 px-3 py-1 rounded-lg tracking-tight text-black">

@@ -12,6 +12,12 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
     if (!isLoading && !user) {
       router.replace("/auth/login"); 
     }
+    if (user?.data.role === 'user') {
+      router.replace("/main");
+    }
+    if (user?.data.role === 'admin') {
+      router.replace("/admin");
+    }
   }, [user, isLoading, router]);
 
   if (isLoading) {
