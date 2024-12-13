@@ -1,3 +1,4 @@
+
 export interface Billboard {
     id: string;
     title: string;
@@ -69,4 +70,14 @@ export interface User {
     phone_number: string;
     address: string;
     image_src: string;
+}
+
+export interface Comment {
+    id: string;
+    text: string;
+    rating: number;
+    user_id: string;
+    autopart_id: string;
+    createdAt: string;
+    User: User;
 }

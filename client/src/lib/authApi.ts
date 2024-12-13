@@ -21,7 +21,7 @@ export const register = async (data: RegisterParams) => {
 };
 export const logout = async () => {
   return AUTH_API.get("/auth/logout");
-}
+};
 export const verifyEmail = async (id: string) => {
   return AUTH_API.get(`/auth/email/verify/${id}`);
 };
@@ -145,17 +145,16 @@ export const updateAutopart = async (data: { id: string } & AutopartParam) =>
 export const deleteAutopart = async (id: string) =>
   AUTH_API.delete(`/autoparts/${id}`);
 
-
 // payments
 interface PaymentParam {
   userData: {
     email: string;
     name: string;
-  },
+  };
   paymentData: {
     productIds: string[];
     quantities: number[];
-  }
+  };
 }
 
 export const createPaymentStripe = async (data: PaymentParam) =>
@@ -169,10 +168,30 @@ interface OrderParam {
 
 export const getOrders = async () => AUTH_API.get("/orders");
 export const getOrderById = async (id: string) => AUTH_API.get(`/orders/${id}`);
-export const getOrderByUserId = async (userId: string) => AUTH_API.get(`/orders/user/${userId}`);
+export const getOrderByUserId = async (userId: string) =>
+  AUTH_API.get(`/orders/user/${userId}`);
 export const createOrder = async (data: OrderParam) =>
   AUTH_API.post("/orders", data);
 export const updateOrder = async (data: { id: string } & OrderParam) =>
   AUTH_API.put(`/orders/${data.id}`, data);
-export const deleteOrder = async (id: string) => AUTH_API.delete(`/orders/${id}`);
+export const deleteOrder = async (id: string) =>
+  AUTH_API.delete(`/orders/${id}`);
 
+// comments
+
+interface CommentParam {
+  rating: number;
+  text: string;
+  autopart_id: string;
+  user_id: string;
+}
+
+export const getCommentsByAutopart = async (id: string) =>
+  AUTH_API.get(`/comments/autopart/${id}`);
+export const getCommentById = async (id: string) =>
+  AUTH_API.get(`/comments/${id}`);
+export const addComment = async (data: CommentParam) =>
+  AUTH_API.post("/comments", data);
+export const updateComment = async (data: { id: string } & CommentParam) =>
+  AUTH_API.put(`/comments/${data.id}`, data);
+export const deleteComment = async (id: string) => AUTH_API.delete(`/comments/${id}`);

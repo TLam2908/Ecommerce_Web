@@ -61,6 +61,8 @@ model Autopart {
 
   Images Images[]
   CartItem CartItem[]
+
+  Comment Comment[]
 }
 
 model Autopart_Model {
@@ -99,6 +101,8 @@ model User {
   Cart Cart[]
   VerificationCode VerificationCode[]
   Session Session[]
+
+  Comment Comment[]
 }
 
 model VerificationCode {
@@ -155,4 +159,16 @@ model Billboard {
   updatedAt DateTime @updatedAt
 
   Category Category[]
+}
+
+model Comment {
+  id Int @id @default(autoincrement())
+  user_id Int
+  autopart_id Int
+  text String
+  createdAt DateTime @default(now())
+  rating Int @default(0)
+
+  User User @relation(fields: [user_id], references: [id])
+  Autopart Autopart @relation(fields: [autopart_id], references: [id])
 }

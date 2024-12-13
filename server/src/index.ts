@@ -22,6 +22,7 @@ import homeRoutes from "./routes/home.route";
 import webhookRoutes from "./routes/webhook.route";
 import orderRoutes from "./routes/order.route";
 import statisticRoutes from "./routes/statistic.route";
+import commentRoutes from "./routes/comment.route";
 
 const app = express();
 
@@ -55,6 +56,7 @@ app.use("/models", authenticate, modelRoutes);
 app.use("/autoparts", authenticate, autopartRoutes);
 app.use("/payments", authenticate, paymentRoutes);
 app.use("/orders", authenticate, orderRoutes);
+app.use("/comments", authenticate, commentRoutes);
 app.use(errorHandler);
 
 app.listen(PORT, () => {

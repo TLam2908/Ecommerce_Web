@@ -13,7 +13,7 @@ const UserMenu = () => {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   
-  console.log(user);
+  // console.log(user);
   const toggleOpen = useCallback(() => {
     setIsOpen((value) => !value);
   }, []);
