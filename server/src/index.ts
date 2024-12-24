@@ -23,6 +23,7 @@ import webhookRoutes from "./routes/webhook.route";
 import orderRoutes from "./routes/order.route";
 import statisticRoutes from "./routes/statistic.route";
 import commentRoutes from "./routes/comment.route";
+import googleRoutes from "./routes/google.route";
 
 const app = express();
 
@@ -43,6 +44,7 @@ app.get("/", (req: Request, res: Response, next) => {
 });
 // auth routes
 app.use("/home", homeRoutes);
+app.use("/api", googleRoutes);
 app.use("/auth", authRoutes);
 app.use("/statistics", statisticRoutes)
 

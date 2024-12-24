@@ -9,7 +9,7 @@ import { refreshTokenOptions, RefreshTokenPayload, verifyToken } from "../utils/
 import { signToken } from "../utils/jwt";
 import { hashValue, compareValue } from "../utils/bcrypt";
 import { sendMail } from "../utils/sendMail";
-import { getVerifyEmailTemplate, getPasswordResetTemplate } from "../utils/emailTemplates";
+// import { getVerifyEmailTemplate, getPasswordResetTemplate } from "../utils/emailTemplates";
 import React from "react";
 import VerifyEmail from "../emails/verify";
 import ResetPassword from "../emails/resetPassword";

@@ -36,6 +36,10 @@ export const resetPassword = async (data: {
   return AUTH_API.post("/auth/password/reset", data);
 };
 
+export const googleAuth = async () => {
+  return AUTH_API.get("/api/auth/google");
+}
+
 // users
 interface UserParam {
   email: string;

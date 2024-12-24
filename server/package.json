@@ -19,6 +19,7 @@
     "@types/express": "^4.17.21",
     "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "^22.5.4",
+    "@types/passport-google-oauth20": "^2.0.16",
     "@types/react": "^18.3.12",
     "express": "^4.21.0",
     "prisma": "^5.21.1",
@@ -39,6 +40,8 @@
     "moment": "^2.30.1",
     "moment-timezone": "^0.5.45",
     "multer": "^1.4.5-lts.1",
+    "passport": "^0.7.0",
+    "passport-google-oauth20": "^2.0.0",
     "resend": "^4.0.0",
     "stripe": "^17.4.0",
     "zod": "^3.23.8"

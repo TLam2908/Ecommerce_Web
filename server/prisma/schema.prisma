@@ -93,6 +93,8 @@ model User {
   role String
   image_src String?
   image_id String?
+  provider String?
+  provider_id String?
 
   createdAt DateTime
   verified Boolean @default(false)

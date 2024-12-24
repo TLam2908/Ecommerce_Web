@@ -1,14 +1,33 @@
 import catchErrors from "../utils/catchError";
 import { verifyToken } from "../utils/jwt";
-import { clearAuthCookies, setAuthCookies, getAccessTokenCookieOptions, getRefreshTokenCookieOptions } from "../utils/cookies";
+import {
+  clearAuthCookies,
+  setAuthCookies,
+  getAccessTokenCookieOptions,
+  getRefreshTokenCookieOptions,
+} from "../utils/cookies";
 
-import { createAccount, loginUser, refreshUserAccessToken, verifyEmail, sendPasswordResetEmail, resetPassword } from "../services/auth.service";
+import {
+  createAccount,
+  loginUser,
+  refreshUserAccessToken,
+  verifyEmail,
+  sendPasswordResetEmail,
+  resetPassword,
+} from "../services/auth.service";
 import { CREATED, OK, UNAUTHORIZED } from "../constants/http";
 
-import { emailSchema, registerSchema, loginSchema, verificationCodeSchema, resetPasswordSchema } from "../validation/auth.validation";
-
+import {
+  emailSchema,
+  registerSchema,
+  loginSchema,
+  verificationCodeSchema,
+  resetPasswordSchema,
+} from "../validation/auth.validation";
+import passport from "../configs/passport";
 import { PrismaClient } from "@prisma/client";
 import appAssert from "../utils/appAssert";
+import { APP_ORIGIN } from "../constants/env";
 // if password and confirm password is not the same,
 // zod will throw an error and catchErrors will catch it and pass it to the error handler middleware.
 
@@ -39,18 +58,19 @@ export const loginHandler = catchErrors(async (req, res) => {
   // call service
   const { safeUser, accessToken, refreshToken } = await loginUser(request);
 
-  
   // return response
-  return setAuthCookies({ res, accessToken, refreshToken }).status(OK).json({
-    data: {
-      message: "Login successful",
-      role: safeUser.role
-    }
-  });
+  return setAuthCookies({ res, accessToken, refreshToken })
+    .status(OK)
+    .json({
+      data: {
+        message: "Login successful",
+        role: safeUser.role,
+      },
+    });
 });
 
 export const logoutHandler = catchErrors(async (req, res) => {
-  const accessToken = req.cookies.accessToken as string|undefined;
+  const accessToken = req.cookies.accessToken as string | undefined;
   // validate access token
   const { payload } = verifyToken(accessToken || "");
   if (payload) {
@@ -67,29 +87,34 @@ export const logoutHandler = catchErrors(async (req, res) => {
 });
 
 export const refreshHandler = catchErrors(async (req, res) => {
-    const refreshToken = req.cookies.refreshToken as string|undefined;
-    appAssert(refreshToken, UNAUTHORIZED, "Missing refresh token");
+  const refreshToken = req.cookies.refreshToken as string | undefined;
+  appAssert(refreshToken, UNAUTHORIZED, "Missing refresh token");
 
-    const { accessToken, newRefreshToken } = await refreshUserAccessToken(refreshToken);
+  const { accessToken, newRefreshToken } = await refreshUserAccessToken(
+    refreshToken
+  );
 
-    if (newRefreshToken) {
-        res.cookie("refreshToken", newRefreshToken, getRefreshTokenCookieOptions());
-    }
- 
-    return res.status(OK).cookie("accessToken", accessToken, getAccessTokenCookieOptions()).json({
-        message: "Access token refreshed",
-    })
+  if (newRefreshToken) {
+    res.cookie("refreshToken", newRefreshToken, getRefreshTokenCookieOptions());
+  }
+
+  return res
+    .status(OK)
+    .cookie("accessToken", accessToken, getAccessTokenCookieOptions())
+    .json({
+      message: "Access token refreshed",
+    });
 });
 
 export const verifyEmailHandler = catchErrors(async (req, res) => {
-    const verificationCode = verificationCodeSchema.parse(req.params.code);
+  const verificationCode = verificationCodeSchema.parse(req.params.code);
 
-    await verifyEmail(verificationCode);
+  await verifyEmail(verificationCode);
 
-    return res.status(OK).json({
-        message: "Email was successfully verified",
-    })
-})
+  return res.status(OK).json({
+    message: "Email was successfully verified",
+  });
+});
 
 export const sendPasswordResetHandler = catchErrors(async (req, res) => {
   const email = emailSchema.parse(req.body.email);
@@ -98,8 +123,8 @@ export const sendPasswordResetHandler = catchErrors(async (req, res) => {
 
   return res.status(OK).json({
     message: "Password reset email sent",
-  })
-})
+  });
+});
 
 export const resetPasswordHandler = catchErrors(async (req, res) => {
   const request = resetPasswordSchema.parse(req.body);
@@ -108,5 +133,38 @@ export const resetPasswordHandler = catchErrors(async (req, res) => {
 
   return clearAuthCookies(res).status(OK).json({
     message: "Password reset successful",
-  })
-})
+  });
+});
+
+export const googleAuth = catchErrors(async (req, res) => {
+  passport.authenticate("google", { scope: ["profile", "email"] })(req, res);
+});
+
+export const googleAuthCallback = catchErrors(async (req, res) => {
+  passport.authenticate(
+    "google",
+    { failureRedirect: `${APP_ORIGIN}/auth/login` },
+    (err: any, user: any, info: any) => {
+      if (err) {
+        console.error("Google authentication error:", err);
+        return res.redirect(`/auth/login?error=auth_failed}`);
+      }
+
+      if (!user) {
+        // Handle case where `done` is called with `false` and additional info
+        const redirectUrl = info?.redirect || `${APP_ORIGIN}/auth/login`;
+        const message = info?.message || "An error occurred.";
+        return res.redirect(`${redirectUrl}`);
+      }
+
+      console.log(user)
+
+      const accessToken = user.accessTokenGG;
+      const refreshToken = user.refreshTokenGG;
+
+      return setAuthCookies({ res, accessToken, refreshToken }).redirect(
+        "http://localhost:3000/main"
+      );
+    }
+  )(req, res);
+});
