@@ -85,7 +85,7 @@ model Model {
 
 model User {
   id Int @id @default(autoincrement())
-  email String @unique
+  email String 
   password String
   name String
   phone_number String?

@@ -12,6 +12,8 @@ import {
 } from "@/components/ui/form";
 import { ImSpinner8 } from "react-icons/im";
 import { FcGoogle } from "react-icons/fc";
+import { FaFacebook } from "react-icons/fa";
+
 import { Input } from "@/components/ui/input";
 import { Button } from "../ui/button";
 import toast from "react-hot-toast";
@@ -73,6 +75,10 @@ const LoginForm = () => {
   const googleHandler = () => {
     window.location.href = "http://localhost:4000/api/auth/google";
   };
+
+  const facebookHandler = () => {
+    window.location.href = "http://localhost:4000/api/auth/facebook";
+  }
 
   const errorValue = searchParams.get("error");
 
@@ -202,6 +208,22 @@ const LoginForm = () => {
               <FcGoogle className="mr-2 h-4 w-4" />
             )}{" "}
             Sign in with Google
+          </Button>
+
+          <Button
+            variant="outline"
+            type="button"
+            disabled={isPending}
+            size="lg"
+            className="w-full"
+            onClick={facebookHandler}
+          >
+            {isPending ? (
+              <ImSpinner8 className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+              <FaFacebook className="mr-2 h-4 w-4 to-blue-500" />
+            )}{" "}
+            Sign in with Facebook
           </Button>
         </Form>
       </CardWarpper>

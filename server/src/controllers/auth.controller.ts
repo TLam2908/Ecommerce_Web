@@ -168,3 +168,34 @@ export const googleAuthCallback = catchErrors(async (req, res) => {
     }
   )(req, res);
 });
+
+
+export const facebookAuth = catchErrors(async (req, res) => {
+  passport.authenticate('facebook', { scope: ['email'] })(req, res);
+});
+
+export const facebookAuthCallback = catchErrors(async (req, res) => {
+  passport.authenticate("facebook", { failureRedirect: `${APP_ORIGIN}/auth/login` },
+    (err: any, user: any, info: any) => {
+      if (err) {
+        console.error("Facebook authentication error:", err);
+        return res.redirect(`/auth/login?error=auth_failed}`);
+      }
+
+      if (!user) {
+        // Handle case where `done` is called with `false` and additional info
+        const redirectUrl = info?.redirect || `${APP_ORIGIN}/auth/login`;
+        const message = info?.message || "An error occurred.";
+        return res.redirect(`${redirectUrl}`);
+      }
+
+      console.log(user)
+
+      const accessToken = user.accessTokenFB;
+      const refreshToken = user.refreshTokenFB;
+
+      return setAuthCookies({ res, accessToken, refreshToken }).redirect(
+        "http://localhost:3000/main"
+      );
+    })(req, res);
+})

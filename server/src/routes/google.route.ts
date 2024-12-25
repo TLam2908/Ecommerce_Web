@@ -1,6 +1,5 @@
 import { Router } from "express";
 import { googleAuth, googleAuthCallback } from "../controllers/auth.controller";
-const passport = require("passport");
 
 const googleRoutes = Router();
 

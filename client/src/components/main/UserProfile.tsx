@@ -110,18 +110,22 @@ const UserProfile = () => {
                       </div>
                     </div>
                     <div className="flex flex-row gap-8">
-                      <button
-                        className="rounded-lg hover:opacity-80 hover:bg-black hover:text-white hover:border-none transition w-[100px] p-2 border-black border-2"
-                        onClick={() => editUser.onOpen(data?.data)}
-                      >
-                        Edit
-                      </button>
-                      <button
-                        className="rounded-lg hover:opacity-80 hover:bg-black hover:text-white hover:border-none transition w-[200px] p-2 border-black border-2"
-                        onClick={() => router.push("/email/forgot")}
-                      >
-                        Change password
-                      </button>
+                      {data?.data.provider === "" && (
+                        <>
+                          <button
+                            className="rounded-lg hover:opacity-80 hover:bg-black hover:text-white hover:border-none transition w-[100px] p-2 border-black border-2"
+                            onClick={() => editUser.onOpen(data?.data)}
+                          >
+                            Edit
+                          </button>
+                          <button
+                            className="rounded-lg hover:opacity-80 hover:bg-black hover:text-white hover:border-none transition w-[200px] p-2 border-black border-2"
+                            onClick={() => router.push("/email/forgot")}
+                          >
+                            Change password
+                          </button>
+                        </>
+                      )}
                     </div>
                   </div>
                   {/* )} */}
