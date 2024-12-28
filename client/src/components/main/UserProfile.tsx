@@ -110,7 +110,7 @@ const UserProfile = () => {
                       </div>
                     </div>
                     <div className="flex flex-row gap-8">
-                      {data?.data.provider === "" && (
+                      {data?.data.provider === null && (
                         <>
                           <button
                             className="rounded-lg hover:opacity-80 hover:bg-black hover:text-white hover:border-none transition w-[100px] p-2 border-black border-2"

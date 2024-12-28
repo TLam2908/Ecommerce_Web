@@ -14,68 +14,67 @@ datasource db {
 }
 
 model Manufacturer {
-  id Int @id @default(autoincrement())
-  name String @unique
-  country String
+  id              Int     @id @default(autoincrement())
+  name            String  @unique
+  country         String
   type_of_product String
-  abbreviation String?
+  abbreviation    String?
 
   Autopart Autopart[]
 }
 
 model Category {
-  id Int @id @default(autoincrement())
-  name String @unique
-  description String?
-  code String
+  id           Int     @id @default(autoincrement())
+  name         String  @unique
+  description  String?
+  code         String
   billboard_id Int
-  
-  Autopart Autopart[]
-  Billboard Billboard @relation(fields: [billboard_id], references: [id])
 
+  Autopart  Autopart[]
+  Billboard Billboard  @relation(fields: [billboard_id], references: [id])
 }
 
 model Images {
-  id Int @id @default(autoincrement())
-  src String
+  id            Int    @id @default(autoincrement())
+  src           String
   cloudinary_id String
-  autopart_id Int
+  autopart_id   Int
 
   Autopart Autopart @relation(fields: [autopart_id], references: [id])
 }
 
 model Autopart {
-  id Int @id @default(autoincrement())
-  name String
-  description String?
-  oem_number String
-  price Int
+  id              Int     @id @default(autoincrement())
+  name            String
+  description     String?
+  oem_number      String
+  price           Int
   manufacturer_id Int
-  category_id Int
-  quantity Int
+  category_id     Int
+  quantity        Int
 
   Autopart_Model Autopart_Model[]
-  
-  Manufacturer Manufacturer @relation(fields: [manufacturer_id], references: [id])
-  Category Category @relation(fields: [category_id], references: [id])
 
-  Images Images[]
+  Manufacturer Manufacturer @relation(fields: [manufacturer_id], references: [id])
+  Category     Category     @relation(fields: [category_id], references: [id])
+
+  Images   Images[]
   CartItem CartItem[]
 
   Comment Comment[]
 }
 
 model Autopart_Model {
-  id Int @id @default(autoincrement())
+  id          Int @id @default(autoincrement())
   autopart_id Int
-  model_id Int
+  model_id    Int
 
   Autopart Autopart @relation(fields: [autopart_id], references: [id])
-  Model Model @relation(fields: [model_id], references: [id])
+  Model    Model    @relation(fields: [model_id], references: [id])
 }
 
 model Model {
-  id Int @id @default(autoincrement())
+  id   Int    @id @default(autoincrement())
   name String
   make String
   year String
@@ -84,57 +83,56 @@ model Model {
 }
 
 model User {
-  id Int @id @default(autoincrement())
-  email String 
-  password String
-  name String
+  id           Int     @id @default(autoincrement())
+  email        String  @unique
+  password     String
+  name         String
   phone_number String?
-  address String?
-  role String
-  image_src String?
-  image_id String?
-  provider String?
-  provider_id String?
+  address      String?
+  role         String
+  image_src    String?
+  image_id     String?
+  provider     String?
+  provider_id  String?
 
   createdAt DateTime
-  verified Boolean @default(false)
+  verified  Boolean  @default(false)
 
-
-  Cart Cart[]
+  Cart             Cart[]
   VerificationCode VerificationCode[]
-  Session Session[]
+  Session          Session[]
 
   Comment Comment[]
 }
 
 model VerificationCode {
-  id Int @id @default(autoincrement())
-  type String
-  createdAt DateTime 
+  id        Int      @id @default(autoincrement())
+  type      String
+  createdAt DateTime
   expiresAt DateTime
-  user_id Int
+  user_id   Int
 
   User User @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
 
 model Session {
-  id Int @id @default(autoincrement())
-  user_id Int
-  createdAt DateTime 
-  expiresAt DateTime 
+  id        Int      @id @default(autoincrement())
+  user_id   Int
+  createdAt DateTime
+  expiresAt DateTime
   userAgent String?
 
   User User @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
 
 model Cart {
-  id Int @id @default(autoincrement())
-  user_id Int
-  total Int
-  isPaid Boolean 
-  isSent Boolean @default(false)
-  phone String @default("")
-  address String @default("")
+  id        Int      @id @default(autoincrement())
+  user_id   Int
+  total     Int
+  isPaid    Boolean
+  isSent    Boolean  @default(false)
+  phone     String   @default("")
+  address   String   @default("")
   createdAt DateTime @default(now())
 
   User User @relation(fields: [user_id], references: [id], onDelete: Cascade)
@@ -143,20 +141,20 @@ model Cart {
 }
 
 model CartItem {
-  id Int @id @default(autoincrement())
-  cart_id Int
+  id          Int @id @default(autoincrement())
+  cart_id     Int
   autopart_id Int
-  quantity Int
+  quantity    Int
 
-  Cart Cart @relation(fields: [cart_id], references: [id], onDelete: Cascade)
+  Cart     Cart     @relation(fields: [cart_id], references: [id], onDelete: Cascade)
   Autopart Autopart @relation(fields: [autopart_id], references: [id])
 }
 
 model Billboard {
-  id Int @id @default(autoincrement())
-  title String @unique
+  id        Int      @id @default(autoincrement())
+  title     String   @unique
   image_src String
-  image_id String
+  image_id  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -164,13 +162,13 @@ model Billboard {
 }
 
 model Comment {
-  id Int @id @default(autoincrement())
-  user_id Int
+  id          Int      @id @default(autoincrement())
+  user_id     Int
   autopart_id Int
-  text String
-  createdAt DateTime @default(now())
-  rating Int @default(0)
+  text        String
+  createdAt   DateTime @default(now())
+  rating      Int      @default(0)
 
-  User User @relation(fields: [user_id], references: [id])
+  User     User     @relation(fields: [user_id], references: [id])
   Autopart Autopart @relation(fields: [autopart_id], references: [id])
 }

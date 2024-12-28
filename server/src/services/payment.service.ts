@@ -5,6 +5,11 @@ import { PrismaClient } from "@prisma/client";
 import { INTERNAL_SERVER_ERROR, NOT_FOUND } from "../constants/http";
 import { APP_ORIGIN } from "../constants/env";
 
+import Receipt from "../emails/receipt";
+import React from "react";
+import { sendMail } from "../utils/sendMail";
+import { format } from "date-fns";
+
 const prisma = new PrismaClient();
 
 type CreatePaymentStripeParams = {
@@ -138,9 +143,46 @@ export const successPaymentStripe = async (body: any, signature: any) => {
         phone: session.customer_details?.phone || "",
       },
       include: {
-        CartItem: true,
+        CartItem: {
+          include: {
+            Autopart: {
+              include: {
+                Images: true,
+              },
+            },
+          },
+        },
       },
     });
+
+    const email = session.customer_details?.email;
+    const cartEmail = {
+      id: cart.id,
+      user: session.customer_details?.name || "Customer",
+      email: session.customer_details?.email || "",
+      address: addressString,
+      phone: session.customer_details?.phone || "",
+      date: format(new Date(), "MMMM dd, yyyy"),  
+      items: cart.CartItem.map((item) => ({
+        name: item.Autopart.name,
+        quantity: item.quantity,
+        price: item.Autopart.price,
+        img: item.Autopart.Images[0].src,
+      })),
+      total: cart.total,
+    };
+
+    appAssert(email, NOT_FOUND, "Email not found");
+    const { data, error } = await sendMail({
+      to: email as string,
+      subject: "Receipt",
+      text: "Your receipt",
+      react: React.createElement(Receipt, { cartEmail }),
+    })
+
+    console.log("Email sent successfully", data);
+    appAssert(data?.id, INTERNAL_SERVER_ERROR, `${error?.name} - ${error?.message}`);
+
 
     appAssert(cart, NOT_FOUND, "Cart not found");
     const updateProducts = cart.CartItem.map(async (item) => {
