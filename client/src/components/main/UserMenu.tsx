@@ -4,20 +4,21 @@ import MenuItem from "./MenuItem";
 
 import { logout } from "@/lib/authApi";
 import useAuth from "@/hook/useAuth";
-import { useRouter } from "next/navigation";
-import { useState, useCallback, useEffect } from "react";
+import { useRouter, usePathname } from "next/navigation";
+import { useState, useCallback } from "react";
 import Avatar from "../Avatar";
 
 const UserMenu = () => {
   const { user } = useAuth();
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
-  
+  const pathname = usePathname();
+  const isAdminPage = pathname?.includes("/admin");
+
   // console.log(user);
   const toggleOpen = useCallback(() => {
     setIsOpen((value) => !value);
   }, []);
-
 
   const logoutHandler = () => {
     logout();
@@ -43,8 +44,8 @@ const UserMenu = () => {
             <MenuItem label="Logout" onClick={logoutHandler} />
             {user?.data.role === "admin" && (
               <MenuItem
-                label="Dashboard"
-                onClick={() => router.push("/admin")}
+                label={isAdminPage ? "Main" : "Dashboard"}
+                onClick={() => router.push(isAdminPage ? "/main" : "/admin")}
               />
             )}
           </div>

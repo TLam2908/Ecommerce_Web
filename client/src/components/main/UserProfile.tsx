@@ -143,14 +143,19 @@ const UserProfile = () => {
                 <IoPersonOutline size={30} className="ml-2" />
                 <span>Name: {data?.data.name}</span>
               </div>
-              <div className="text-xl text-left flex flex-row gap-4">
-                <PiGlobeStand className="ml-2" size={30} />
-                <span>Address: {data?.data.address}</span>
-              </div>
-              <div className="text-xl text-left flex flex-row gap-4">
-                <FiPhone className="ml-2" size={30} />
-                <span>Phone number: {data?.data.phone_number}</span>
-              </div>
+              {data?.data.provider === null && (
+                <div className="text-xl text-left flex flex-row gap-4">
+                  <PiGlobeStand className="ml-2" size={30} />
+                  <span>Address: {data?.data.address}</span>
+                </div>
+              )}
+              {data?.data.provider === null && (
+                <div className="text-xl text-left flex flex-row gap-4">
+                  <FiPhone className="ml-2" size={30} />
+                  <span>Phone number: {data?.data.phone_number}</span>
+                </div>
+              )}
+
               <div className="text-xl text-left flex flex-row gap-4">
                 <HiOutlineMail className="ml-2" size={30} />
                 <span>Email: {data?.data.email}</span>
